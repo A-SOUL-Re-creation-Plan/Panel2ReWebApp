@@ -11,10 +11,10 @@ async function getSchedules(){
         for(let i=0;i<weekly_schedule.value.length;i++){
             calendarOptions.events.push(weekly_schedule.value[i])
         }
-        // console.log(weekly_schedule.value)
     }).catch(err=>{
-        weekly_schedule.value={'msg': "failed"}
+        weekly_schedule.value=''
     })
+    console.log(weekly_schedule.value)
 }
 const calendarOptions = {
     plugins: [ interactionPlugin, listPlugin ],
@@ -27,6 +27,8 @@ const calendarOptions = {
         center: 'title',
         right: ''
     },
+    contentHeight: 335,
+    firstDay: 1,
 }
 onMounted(()=>{
     getSchedules()
@@ -35,7 +37,8 @@ onMounted(()=>{
 
 <template>
 <a-card hoverable title="直播日程表">
-    <FullCalendar :options="calendarOptions"/>
+    <a-empty v-if="!weekly_schedule.length"/>
+    <FullCalendar :options="calendarOptions" v-else/>
 </a-card>
 </template>
 

@@ -51,7 +51,7 @@ function getList(args){
     requests.get('/api/bili_dynamic',{baseURL: baseURL,params: params}).then(res=>{
         d_data.value=res.data
     }).catch(err=>{
-        d_data.value=err.code
+        d_data.value=''
     })
 }
 function getUserInfo(uid){
