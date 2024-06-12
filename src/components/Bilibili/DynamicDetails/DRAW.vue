@@ -2,6 +2,8 @@
 import { onBeforeMount } from 'vue';
 
 const props = defineProps(['data'])
+
+
 const dynamic_id = props.data.id_str
 const data = props.data.modules.module_dynamic.desc
 const imgs = props.data.modules.module_dynamic.major.draw.items

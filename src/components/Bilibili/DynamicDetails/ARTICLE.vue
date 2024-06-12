@@ -1,5 +1,7 @@
 <script setup>
 const props = defineProps(['data'])
+
+
 const data = props.data.modules.module_dynamic.major.article
 
 function go(url){

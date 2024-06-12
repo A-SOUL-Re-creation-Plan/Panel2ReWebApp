@@ -1,6 +1,7 @@
 <script setup>
 import dateFormatter from '@/utils/dateFormatter'
 const props = defineProps(['data'])
+
 const data = props.data.modules.module_dynamic.major.archive
 
 function go(bvid){

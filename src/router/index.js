@@ -24,6 +24,19 @@ const router = createRouter({
       },
     },
     {
+      path: "/groups",
+      children: [
+        {
+          path: "video",
+          component: () => import("@/views/groups/video/Main.vue")
+        },
+        {
+          path: "cover",
+          component: () => import("@/views/groups/cover/Main.vue")
+        },
+      ]
+    },
+    {
       path: "/:catchAll(.*)",
       redirect: "/404",
       hidden: true,

@@ -1,5 +1,7 @@
 <script setup>
 const props = defineProps(['data'])
+
+
 const data = props.data.modules.module_dynamic.desc.text
 const dynamic_id = props.data.id_str
 function go(url){

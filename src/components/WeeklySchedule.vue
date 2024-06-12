@@ -14,7 +14,6 @@ async function getSchedules(){
     }).catch(err=>{
         weekly_schedule.value=''
     })
-    console.log(weekly_schedule.value)
 }
 const calendarOptions = {
     plugins: [ interactionPlugin, listPlugin ],
