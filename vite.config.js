@@ -4,12 +4,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
-export default defineConfig(({command})=>{
-  const apiaddr = {
-    'serve': 'http://localhost:3007',
-    'build': 'https://p2re_api.xxxxxxxxx.eu.org'
-  }
-  return{
+export default defineConfig(()=>{
+  return {
     plugins: [vue()],
     resolve: {
       alias: {
@@ -23,13 +19,14 @@ export default defineConfig(({command})=>{
       open: true,
       ws: true,
 
-      proxy: {
+      proxy: { // develop environment only
+               // suggest to proxy by web server application in production environment
         "/api": {
-          target: apiaddr[command],
+          target: "http://localhost:3007",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
       },
     },
-  }
+  };
 });

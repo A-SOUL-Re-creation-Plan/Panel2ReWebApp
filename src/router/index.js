@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user';
+import { storeToRefs } from 'pinia';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -50,5 +52,18 @@ const router = createRouter({
     },
   ],
 });
+
+
+
+router.beforeEach((to,from,next)=>{
+  if(to.path=='/user/login') return next();
+  if(to.path=='/user/register') return next();
+  const usrID = storeToRefs(useUserStore())
+  if(usrID.id.value==''){
+    return next("/user/login");
+  }
+  next()  
+})
+
 
 export default router
