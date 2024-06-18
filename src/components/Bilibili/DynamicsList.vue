@@ -25,15 +25,23 @@
         class="bili_dynamics_drawer"
     >
         <template #title>
-            动态查看（近期）{{ drawer_uid }}
+            动态查看{{ drawer_uid }}
         </template>
-        <a-card>
-            <a-list :bordered="false" :loading="!drawer_info.length">
-                <a-list-item v-for="i in drawer_info">
-                    <DynamicDetail :content="i"/>
-                </a-list-item>
-            </a-list>
-        </a-card>
+        <a-list
+            :bordered="false"
+            :loading="!drawer_info.length"
+            v-infinite-scroll="dynamicScrollMonitor"
+            :infinite-scroll-disabled="has_more"
+            infinite-scroll-watch-disabled="has_more"
+        >
+            <a-list-item v-for="i in drawer_info">
+                <DynamicDetail :content="i"/>
+            </a-list-item>
+            <template #scroll-loading>
+                <div v-if="!has_more">暂无更多</div>
+                <a-spin v-else />
+            </template>
+        </a-list>
     </a-drawer>
 </template>
     
@@ -46,6 +54,11 @@ const d_data = ref()
 const bili_dynamic_viewer_visible = ref(false)
 const drawer_uid = ref(2)
 const drawer_info = ref({})
+
+var offset = ""
+var has_more = false
+const busyFetchDynamic = ref(false)
+
 function getList(args){
     const params = args
     requests.get('/api/bili_dynamic',{baseURL: baseURL,params: params}).then(res=>{
@@ -57,9 +70,12 @@ function getList(args){
 function getUserInfo(uid){
     var params = {
         'uid': uid,
+        "offset": offset
     }
     requests.get('/api/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
-        drawer_info.value = res.data
+        drawer_info.value = res.data.items
+        offset = res.data.offset  
+        has_more = res.data.has_more
     }).catch(err=>{
         drawer_info.value = err
     })
@@ -67,8 +83,24 @@ function getUserInfo(uid){
 function showDrawer(uid){
     drawer_info.value = {}
     getUserInfo(uid);
-    bili_dynamic_viewer_visible.value=true
+    bili_dynamic_viewer_visible.value = true
     drawer_uid.value=uid
+}
+const dynamicScrollMonitor = ()=>{
+    if(drawer_info.value.length){
+        console.log("Reached")
+        var params = {
+            'uid': drawer_uid.value,
+            "offset": offset
+        }
+        requests.get('/api/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
+            res.data.items.forEach(d => {
+                drawer_info.value.push(d)
+            });
+            offset = res.data.offset  
+            has_more = res.data.has_more
+        })
+    }
 }
 onMounted(()=>{
     getList({});

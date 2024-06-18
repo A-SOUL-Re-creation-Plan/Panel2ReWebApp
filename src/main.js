@@ -5,6 +5,7 @@ import ArcoVueIcon from "@arco-design/web-vue/es/icon";
 import "@arco-design/web-vue/dist/arco.css";
 
 import "@/assets/fonts.css";
+import infiniteScroll from "vue3-infinite-scroll-better";
 
 import App from './App.vue'
 import router from './router'
@@ -18,5 +19,7 @@ app.use(pinia)
 app.use(router)
 app.use(ArcoVue)
 app.use(ArcoVueIcon)
+
+app.use(infiniteScroll)
 
 app.mount('#app')

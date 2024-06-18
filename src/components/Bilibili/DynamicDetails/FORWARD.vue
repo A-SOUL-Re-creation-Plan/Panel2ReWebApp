@@ -1,7 +1,6 @@
 <script setup>
 import DynamicDetail from '@/components/Bilibili/DynamicDetail.vue'
 const props = defineProps(['data'])
-console.log(props.data)
 const data = props.data.modules.module_dynamic.desc
 const orig = props.data.orig
 </script>
