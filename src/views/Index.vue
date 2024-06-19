@@ -20,9 +20,6 @@ import WeeklySchedule from '@/components/WeeklySchedule.vue'
 
     
 <style>
-    #index{
-        margin: 15px 15px;
-    }
     #index>.arco-row>.arco-col > *{
         margin-bottom: 15px;
     }

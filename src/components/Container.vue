@@ -3,7 +3,7 @@
         <a-layout-sider v-if="!route.meta.fs&&!user.id==''">
             <Sider/>
         </a-layout-sider>
-        <a-layout-content>
+        <a-layout-content id="routerContainer">
             <RouterView/>
         </a-layout-content>
     </a-layout>
@@ -23,5 +23,9 @@
     display: flex;
     min-height: 100%;
     flex-direction: row;
+}
+
+#routerContainer{
+    margin: 15px 15px;
 }
 </style>
