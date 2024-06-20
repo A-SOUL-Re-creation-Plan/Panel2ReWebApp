@@ -3,7 +3,9 @@ import FullCalendar from '@fullcalendar/vue3'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import { ref, reactive, onMounted } from 'vue'
+import { Modal } from '@arco-design/web-vue'
 import requests from '@/utils/requests'
+import IntroGenerator from '@/utils/groups/video/IntroGenerator'
 const weekly_schedule = ref([]) 
 async function getSchedules(){
     requests.get('/api/weekly_schedule').then(resp=>{
@@ -28,6 +30,21 @@ const calendarOptions = {
     },
     contentHeight: 335,
     firstDay: 1,
+    eventClick:(info)=>{
+        info.jsEvent.preventDefault();
+        let t = info.event
+        Modal.info({
+            title: '简介生成',
+            content: IntroGenerator(t),
+            modalStyle:{
+                whiteSpace: "pre-wrap"
+            },
+            hideCancel: true,
+            okText: '复制',
+            onOk: navigator.clipboard.writeText(IntroGenerator(t))
+        })
+        
+    }
 }
 onMounted(()=>{
     getSchedules()
