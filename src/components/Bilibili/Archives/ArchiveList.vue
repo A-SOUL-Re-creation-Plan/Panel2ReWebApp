@@ -6,27 +6,47 @@
         <template #extra>
             <icon-sync @click="onPageChange" />
         </template>
-        <a-space direction="vertical" fill align="center">
+        <a-space direction="vertical" fill>
+            <a-select defaultValue="pubed,not_pubed,is_pubing" :style="{width:'300px'}" placeholder="稿件类别..." v-model:model-value="status" @change="onPageSizeFilterChange">
+                <a-option value="pubed,not_pubed,is_pubing" label="全部稿件"/>
+                <a-option value="pubed" label="通过"/>
+                <a-option value="not_pubed" label="未通过"/>
+                <a-option value="is_pubing" label="处理中"/>
+            </a-select>
             <a-list :max-height="530" :loading="listLoading">
                 <a-list-item v-for="i in data" class="bili_archive_item">
                     <a-row :gutter="20">
-                        <a-col :span="6">
-                            <div class="bili_archive_cover" @click="bv_go(i.Archive.bvid)" >
-                                <img :src="i.Archive.cover" referrerPolicy="no-referrer" />
+                        <a-col :span="7">
+                            <div class="bili_archive_cover" @click="go(i.picture)" >
+                                <img :src="i.picture" referrerPolicy="no-referrer" />
                             </div>
                         </a-col>
-                        <a-col :span="18" :div="true" class="bili_archive_info">
-                            <div class="bili_archive_title" @click="bv_go(i.Archive.bvid)">
-                                {{ i.Archive.title }}
+                        <a-col :span="17" :div="true" class="bili_archive_info">
+                            <div class="bili_archive_title" @click="go('https://bilibili.com/video/'+i.bvid)">
+                                {{ i.title }}
                             </div>
                             <div class="bili_archive_info_status">
-                                <span @click="bv_go(i.Archive.bvid)" >{{ i.Archive.bvid }}</span> - {{ i.Archive.state_desc }}
+                                <span>
+                                    {{ formatDate(new Date(i.ctime*1000)) }}
+                                </span>
+                                 - 
+                                <span @click="go('https://bilibili.com/video/'+i.bvid)" >{{ i.bvid }}</span>
+                                 - 
+                                <span>{{ i.state_desc }}</span>
                             </div>
                         </a-col>
                     </a-row>
                 </a-list-item>
             </a-list>
-            <a-pagination :total="total" v-model:current="pn" @change="onPageChange" showTotal/>
+            <a-pagination
+                :total="total"
+                v-model:current="pn"
+                v-model:page-size="ps"
+                @change="onPageChange"
+                @page-size-change="onPageSizeFilterChange"
+                showTotal
+                show-page-size
+            />
         </a-space>
     </a-card>    
 </template>
@@ -34,29 +54,36 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import requests from '@/utils/requests'
+import formatDate from '@/utils/dateFormatter';
 const data = ref()
 const pn = ref(1)
 const ps = ref(10)
+const status = ref("pubed,not_pubed,is_pubing")
 const total = ref(0)
 const listLoading = ref(true)
-const getArchiveList = (page)=>{
-    requests.get('/api/bili_archives',{params: {'pn':page,'ps': 10}}).then(resp=>{
-        data.value = resp.data.arc_audits;
+const getArchiveList = ()=>{
+    requests.get('/api/bili_archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
+        data.value = resp.data.items;
         total.value = resp.data.page.count;
         listLoading.value = false
     }).catch(err=>{
         console.log(err);
     })
 }
-const bv_go = (bvid)=>{
-    window.open('https://www.bilibili.com/video/'+bvid);
-}
 const onPageChange = ()=>{
     listLoading.value = true;
-    getArchiveList(pn.value)
+    getArchiveList()
+}
+const onPageSizeFilterChange = ()=>{
+    pn.value=1;
+    listLoading.value = true;
+    getArchiveList();
+}
+const go = (url)=>{
+    window.open('javascript:window.name;', '<script>location.replace("'+url+'")<\/script>')
 }
 onMounted(()=>{
-    getArchiveList(pn.value)
+    getArchiveList()
 })
 
 </script>
@@ -80,7 +107,7 @@ onMounted(()=>{
     align-items: center;
 }
 .bili_archive_cover > img{
-    width: 100%;
+    width: 90%;
 }
 .bili_archive_info{
     height: 100px;
