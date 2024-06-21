@@ -1,33 +1,33 @@
 <template>
-    <a-card class="bili_archives" :loading="listLoading">
+    <a-card class="bili_archives">
         <template #title>
-            稿件列表 第{{ pn }}/{{ page_n }}页，共计{{ total }}个稿件
+            稿件列表
         </template>
         <template #extra>
-            <a-button @click="pn--">上一页</a-button>
-            <a-button @click="pn++">下一页</a-button>
+            <icon-sync @click="onPageChange" />
         </template>
-        <a-list :max-height="530">
-            <a-list-item v-for="i in data" class="bili_archive_item">
-                <a-row :gutter="20">
-                    <a-col :span="6">
-                        <div class="bili_archive_cover" @click="bv_go(i.Archive.bvid)" >
-                            <img :src="i.Archive.cover" referrerPolicy="no-referrer" />
-                        </div>
-                    </a-col>
-                    <a-col :span="18" :div="true" class="bili_archive_info">
-                        <div class="bili_archive_title" @click="bv_go(i.Archive.bvid)">
-                            {{ i.Archive.title }}
-                        </div>
-                        <div class="bili_archive_info_status">
-                            <span @click="bv_go(i.Archive.bvid)" >{{ i.Archive.bvid }}</span> - {{ i.Archive.state_desc }}
-                        </div>
-                        
-                    </a-col>
-                </a-row>
-                
-            </a-list-item>
-        </a-list>
+        <a-space direction="vertical" fill align="center">
+            <a-list :max-height="530" :loading="listLoading">
+                <a-list-item v-for="i in data" class="bili_archive_item">
+                    <a-row :gutter="20">
+                        <a-col :span="6">
+                            <div class="bili_archive_cover" @click="bv_go(i.Archive.bvid)" >
+                                <img :src="i.Archive.cover" referrerPolicy="no-referrer" />
+                            </div>
+                        </a-col>
+                        <a-col :span="18" :div="true" class="bili_archive_info">
+                            <div class="bili_archive_title" @click="bv_go(i.Archive.bvid)">
+                                {{ i.Archive.title }}
+                            </div>
+                            <div class="bili_archive_info_status">
+                                <span @click="bv_go(i.Archive.bvid)" >{{ i.Archive.bvid }}</span> - {{ i.Archive.state_desc }}
+                            </div>
+                        </a-col>
+                    </a-row>
+                </a-list-item>
+            </a-list>
+            <a-pagination :total="total" v-model:current="pn" @change="onPageChange" showTotal/>
+        </a-space>
     </a-card>    
 </template>
     
@@ -35,19 +35,14 @@
 import { onMounted, ref, watch } from 'vue'
 import requests from '@/utils/requests'
 const data = ref()
-const page_n = ref()
 const pn = ref(1)
 const ps = ref(10)
-const total = ref()
+const total = ref(0)
 const listLoading = ref(true)
 const getArchiveList = (page)=>{
     requests.get('/api/bili_archives',{params: {'pn':page,'ps': 10}}).then(resp=>{
         data.value = resp.data.arc_audits;
         total.value = resp.data.page.count;
-        page_n.value = parseInt(total.value / ps.value);
-        if(total.value%ps.value!=0){
-            page_n.value++;
-        }
         listLoading.value = false
     }).catch(err=>{
         console.log(err);
@@ -56,10 +51,10 @@ const getArchiveList = (page)=>{
 const bv_go = (bvid)=>{
     window.open('https://www.bilibili.com/video/'+bvid);
 }
-watch(pn,()=>{
-    listLoading.value = true
+const onPageChange = ()=>{
+    listLoading.value = true;
     getArchiveList(pn.value)
-})
+}
 onMounted(()=>{
     getArchiveList(pn.value)
 })
