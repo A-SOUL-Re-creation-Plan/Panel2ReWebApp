@@ -17,22 +17,31 @@
                 <a-list-item v-for="i in data" class="bili_archive_item">
                     <a-row :gutter="20">
                         <a-col :span="7">
-                            <div class="bili_archive_cover" @click="go(i.picture)" >
-                                <img :src="i.picture" referrerPolicy="no-referrer" />
+                            <div class="bili_archive_cover" @click="go(i.cover)" >
+                                <img :src="i.cover" referrerPolicy="no-referrer" />
                             </div>
                         </a-col>
                         <a-col :span="17" :div="true" class="bili_archive_info">
                             <div class="bili_archive_title" @click="go('https://bilibili.com/video/'+i.bvid)">
                                 {{ i.title }}
                             </div>
+                            <div v-if="!(i.state_panel in [0, 1])">
+                                <span style="color: rgb(var(--orange-7));font-size: medium;" @click="problemClick(i)">
+                                    <IconExclamationCircle/>
+                                    {{ i.state_desc }}
+                                    : <u>详情</u>
+                                </span>
+                            </div>
                             <div class="bili_archive_info_status">
                                 <span>
                                     {{ formatDate(new Date(i.ctime*1000)) }}
                                 </span>
                                  - 
-                                <span @click="go('https://bilibili.com/video/'+i.bvid)" >{{ i.bvid }}</span>
+                                <span @click="BvidClick(i.bvid)">{{ i.bvid }}</span>
                                  - 
-                                <span>{{ i.state_desc }}</span>
+                                <span v-bind:class="{'bili_archive_info_highlight': !(i.state_panel in [0, 1]) }">{{ i.state_desc }}</span>
+                                 - code:
+                                <span>{{ i.state }}</span>
                             </div>
                         </a-col>
                     </a-row>
@@ -55,6 +64,7 @@
 import { onMounted, ref, watch } from 'vue'
 import requests from '@/utils/requests'
 import formatDate from '@/utils/dateFormatter';
+import { Message, Modal } from '@arco-design/web-vue';
 const data = ref()
 const pn = ref(1)
 const ps = ref(10)
@@ -85,6 +95,30 @@ const go = (url)=>{
 onMounted(()=>{
     getArchiveList()
 })
+const BvidClick = (bvid)=>{
+    navigator.clipboard.writeText(bvid)
+    Message.info("已复制BV号到剪切板")
+}
+const problemClick = (info)=>{
+    if (info.state_panel == 4) {
+        requests.get('/api/bili_xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
+            Modal.info({
+            title: '稿件诊断',
+            content: resp.data.msg,
+            hideCancel: true,
+        })
+        }).catch(e=>{
+            console.error(e)
+        })
+    }else{
+        let tlt = (info.problem_description_title.lenth < 2) ? '稿件问题' : info.problem_description_title
+        Modal.info({
+            title: tlt,
+            content: info.reject_reason + '\n' + info.problem_description + '\n\n' + info.modify_advise,
+            hideCancel: true,
+        })
+    }
+}
 
 </script>
 
@@ -121,5 +155,8 @@ onMounted(()=>{
 .bili_archive_info_status{
     font-size: small;
     color: rgb(var(--gray-7));
+}
+.bili_archive_info_highlight{
+    color: rgb(var(--orange-6));
 }
 </style>
