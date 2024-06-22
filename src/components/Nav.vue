@@ -19,7 +19,7 @@
 </script>
 
 <template>
-    <a-layout-header id="navbar">
+    <div id="navbar">
         <div id="nav-logo">
             <Logo height="35px"/>
             <span>Panel2Re</span>
@@ -45,7 +45,7 @@
                 </template>
             </a-dropdown>
         </a-layout>
-    </a-layout-header>
+    </div>
 </template>
 
 <style scoped>

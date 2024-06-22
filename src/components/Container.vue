@@ -1,31 +1,21 @@
 <template>
-    <a-layout id="r_container">
-        <a-layout-sider v-if="!route.meta.fs&&!user.id==''">
-            <Sider/>
-        </a-layout-sider>
-        <a-layout-content id="routerContainer">
-            <RouterView/>
-        </a-layout-content>
-    </a-layout>
+    <div id="r_container">
+        <RouterView/>
+    </div>
 </template>
     
 <script setup>
-    import { useRoute, RouterView } from "vue-router";
-    import { useUserStore } from "@/stores/user";
-    import Sider from '@/components/Sider.vue'
-    const route = useRoute()
-    const user = useUserStore()
+    import { RouterView } from "vue-router";
 </script>
 
     
 <style scoped>
 #r_container {
-    display: flex;
-    min-height: 100%;
-    flex-direction: row;
-}
-
-#routerContainer{
-    margin: 15px 15px;
+    height: 100%;
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+    padding: 15px 15px;
+    scrollbar-width: thin;
+    scrollbar-color: unset;
 }
 </style>

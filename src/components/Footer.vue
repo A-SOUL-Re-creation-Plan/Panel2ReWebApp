@@ -1,7 +1,7 @@
 <template>
-    <a-layout-footer id="copyright">
+    <div id="copyright">
         <span>Panel2Re F:{{ fe_ver }} B:{{ be_ver }} Copyright A-SOUL Recreation Plan 2024</span>
-    </a-layout-footer>
+    </div>
 </template>
     
 <script setup>

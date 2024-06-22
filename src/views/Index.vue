@@ -6,7 +6,7 @@
             </a-col>
             <a-col id="index_b" :span="13">
                 <WeeklySchedule/>
-                <!-- <DynamicsList2Re/> -->
+                <DynamicsList2Re/>
             </a-col>
         </a-row>
     </a-layout>
@@ -14,7 +14,7 @@
     
 <script setup>
 import DynamicsList from '@/components/Bilibili/DynamicsList.vue'
-// import DynamicsList2Re from '@/components/Bilibili/DynamicList2Re.vue'
+import DynamicsList2Re from '@/components/Bilibili/DynamicList2Re.vue'
 import WeeklySchedule from '@/components/WeeklySchedule.vue'
 </script>
 

@@ -10,16 +10,15 @@ document.title = appName;
   <div id="mainlayout">
     <Main/>
   </div>
-  
-  
 </template>
-<style scoped>
+
+<style>
   #mainlayout, body, html {
     height: 100vh;
+    max-height: 100vh;
   }
-  .arco-layout {
-    display: flex;
-    width: 100%;
-    min-height: 100%;
+  .arco-layout{
+    height: inherit;
+    max-height: inherit;
   }
 </style>
