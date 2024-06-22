@@ -103,19 +103,21 @@ const problemClick = (info)=>{
     if (info.state_panel == 4) {
         requests.get('/api/bili_xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
             Modal.info({
-            title: '稿件诊断',
-            content: resp.data.msg,
-            hideCancel: true,
-        })
+                title: '稿件诊断',
+                content: resp.data.msg,
+                hideCancel: true,
+            })
         }).catch(e=>{
             console.error(e)
         })
     }else{
-        let tlt = (info.problem_description_title.lenth < 2) ? '稿件问题' : info.problem_description_title
         Modal.info({
-            title: tlt,
+            title: (info.problem_description_title.length < 2) ? '稿件问题' : info.problem_description_title,
             content: info.reject_reason + '\n' + info.problem_description + '\n\n' + info.modify_advise,
             hideCancel: true,
+            modalStyle: {
+                whiteSpace: "pre-wrap"
+            }
         })
     }
 }
