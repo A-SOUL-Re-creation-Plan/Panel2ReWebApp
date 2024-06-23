@@ -1,5 +1,5 @@
 <template>
-    <LRlayout>
+    <DoubleLayout_LeftImg>
         <template #content>
             <CenterCard title="登录" subtitle="Panel2Re">
                 <template #content>
@@ -48,12 +48,12 @@
                 </template>
             </CenterCard>
         </template>
-    </LRlayout>
+    </DoubleLayout_LeftImg>
 </template>
     
 <script setup>
 import CenterCard from '@/components/CenterCard.vue'
-import LRlayout from '@/components/LRlayout.vue';
+import DoubleLayout_LeftImg from '@/components/DoubleLayout_LeftImg.vue';
 
 import { useRouter } from 'vue-router'
 import { reactive } from 'vue'

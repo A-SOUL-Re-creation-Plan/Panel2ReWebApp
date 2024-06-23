@@ -7,7 +7,7 @@
             <a-layout-sider v-if="!route.meta.fs&&!user.id==''">
                 <Sider/>
             </a-layout-sider>
-            <a-layout-content>
+            <a-layout-content id="content_c">
                 <Container/>
             </a-layout-content>
         </a-layout>
@@ -29,11 +29,9 @@ const user = useUserStore()
 </script>
 
 <style>
-#content{
-    max-height: calc(100vh - 30px);
-    overflow-y: auto;
+#content, #content_c{
+    overflow-x: hidden;
     scrollbar-width: thin;
-    scrollbar-color: unset;
 }
 </style>
     

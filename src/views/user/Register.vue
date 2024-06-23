@@ -1,5 +1,5 @@
 <template>
-    <LRlayout>
+    <DoubleLayout_LeftImg>
         <template #content>
             <CenterCard title="注册" subtitle="Panel2Re">
                 <template #content>
@@ -7,11 +7,11 @@
                 </template>
             </CenterCard>
         </template>
-    </LRlayout>
+    </DoubleLayout_LeftImg>
 </template>
     
 <script setup>
-import LRlayout from '@/components/LRlayout.vue'
+import DoubleLayout_LeftImg from '@/components/DoubleLayout_LeftImg.vue'
 import CenterCard from './../../components/CenterCard.vue'
 
 import { ref } from 'vue'
