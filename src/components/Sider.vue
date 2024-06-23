@@ -1,3 +1,4 @@
+<!-- todo 边栏改为从路由动态读取信息而不是写死 -->
 <template>
     <a-menu>
       <a-sub-menu key="0">
@@ -7,7 +8,7 @@
       </a-sub-menu>
       <a-sub-menu key="1">
         <template #icon><icon-video-camera /></template>
-        <template #title>录播组</template>
+        <template #title>录播切片组</template>
         <a-menu-item key="1-1"><RouterLink to='/groups/video'>主页</RouterLink></a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="2">
