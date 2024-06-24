@@ -43,7 +43,6 @@ const calendarOptions = {
             okText: '复制',
             onOk: navigator.clipboard.writeText(IntroGenerator(t))
         })
-        
     }
 }
 onMounted(()=>{
