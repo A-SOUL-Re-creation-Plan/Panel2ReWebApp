@@ -5,16 +5,15 @@
                 <ArchiveList/>
             </a-col>
             <a-col id="vg-index_b" :span="8">
-                <LarkCalendar/>
+                <ArchiveStatus/>
             </a-col>
         </a-row>
     </a-layout>
-    
 </template>
     
 <script setup>
 import ArchiveList from '@/components/Bilibili/Archives/ArchiveList.vue';
-import LarkCalendar from '@/components/LarkCalendar.vue';
+import ArchiveStatus from '@/components/Bilibili/Archives/ArchiveStatus.vue'
 </script>
 
     

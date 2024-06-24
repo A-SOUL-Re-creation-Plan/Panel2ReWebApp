@@ -52,7 +52,7 @@ onMounted(()=>{
 </script>
 
 <template>
-<a-card hoverable title="直播日程表">
+<a-card hoverable title="直播日程表 (Legacy)">
     <a-empty v-if="!weekly_schedule.length"/>
     <FullCalendar :options="calendarOptions" v-else/>
 </a-card>

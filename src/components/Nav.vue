@@ -11,7 +11,7 @@
     const logout = ()=>{
         user.reset();
         router.push('/user/login')
-    }   
+    }
     onMounted(()=>{
         isLogin.value = !user.id==''
         // console.log("isLogin="+isLogin.value);

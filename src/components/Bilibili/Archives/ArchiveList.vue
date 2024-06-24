@@ -61,20 +61,26 @@
 </template>
     
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import requests from '@/utils/requests'
 import formatDate from '@/utils/dateFormatter';
 import { Message, Modal } from '@arco-design/web-vue';
+import archiveStatusStore from '@/stores/bilibili/archive_status';
+import { storeToRefs } from 'pinia';
 const data = ref()
 const pn = ref(1)
 const ps = ref(10)
 const status = ref("pubed,not_pubed,is_pubing")
+const { pubed, not_pubed, is_pubing } = storeToRefs(archiveStatusStore())
 const total = ref(0)
 const listLoading = ref(true)
 const getArchiveList = ()=>{
     requests.get('/api/bili_archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
         data.value = resp.data.items;
         total.value = resp.data.page.count;
+        pubed.value = resp.data.status.pubed;
+        not_pubed.value = resp.data.status.not_pubed;
+        is_pubing.value = resp.data.status.is_pubing;
         listLoading.value = false
     }).catch(err=>{
         console.log(err);
@@ -92,9 +98,6 @@ const onPageSizeFilterChange = ()=>{
 const go = (url)=>{
     window.open('javascript:window.name;', '<script>location.replace("'+url+'")<\/script>')
 }
-onMounted(()=>{
-    getArchiveList()
-})
 const BvidClick = (bvid)=>{
     navigator.clipboard.writeText(bvid)
     Message.info("已复制BV号到剪切板")
@@ -121,7 +124,9 @@ const problemClick = (info)=>{
         })
     }
 }
-
+onMounted(()=>{
+    getArchiveList()
+})
 </script>
 
     
