@@ -20,6 +20,10 @@ const router = createRouter({
           path: "register",
           component: () => import("@/views/user/Register.vue"),
         },
+        {
+          path: "lark_sso_callback",
+          component: () => import('@/views/user/LarkSSOReturn.vue')
+        }
       ],
       meta: {
         fs: true,
@@ -58,6 +62,7 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>{
   if(to.path=='/user/login') return next();
   if(to.path=='/user/register') return next();
+  if(to.path=="/user/lark_sso_callback") return next();
   const usrID = storeToRefs(useUserStore())
   if(usrID.id.value==''){
     return next("/user/login");

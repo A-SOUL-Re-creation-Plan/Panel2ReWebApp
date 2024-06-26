@@ -15,6 +15,7 @@
                             :rules="[{ required: true, message: '需要用户名。' }]"
                             :validate-trigger="['change', 'blur']"
                             label="用户名"
+                            disabled
                         >
                             <a-input v-model="login_form.id">
                                 <template #prefix>
@@ -28,6 +29,7 @@
                             :validate-trigger="['change', 'blur']"
                             label="密码"
                             allow-clear
+                            disabled
                         >
                             <a-input-password v-model="login_form.pwd">
                                 <template #prefix>
@@ -41,7 +43,10 @@
                             </a-checkbox>
                         </a-form-item>
                         <a-form-item>
-                            <a-button html-type="submit">Login</a-button>
+                            <a-space fill>
+                                <a-button @click="LarkSSORedirect">使用 飞书SSO 登录</a-button>
+                                <a-button html-type="submit" disabled>Login</a-button>
+                            </a-space>
                         </a-form-item>
                     </a-form>
                     <!-- {{ login_form }} -->
@@ -54,36 +59,24 @@
 <script setup>
 import CenterCard from '@/components/CenterCard.vue'
 import DoubleLayout_LeftImg from '@/components/DoubleLayout_LeftImg.vue';
-
-import { useRouter } from 'vue-router'
+import requests from '@/utils/requests'
 import { reactive } from 'vue'
-import { useUserStore } from '@/stores/user';
-import { storeToRefs } from 'pinia';
 import { Message } from '@arco-design/web-vue';
-const router = useRouter()
 const login_form = reactive({
     id: '',
     pwd: '',
     protocol_agreed: false,
 });
-const {setID,setGroup,setAvatar} = useUserStore();
-const handleSubmit = () => {
-    // 临时方案，测试用
-    if(!login_form.id||!login_form.pwd){
-        return false
-    }
+function LarkSSORedirect (){
     if(!login_form.protocol_agreed){
-        Message.info('请同意协议后继续')
-        return false
-    }
-    if(login_form.id==='admin'&&login_form.pwd==='admin'){
-        setID("Admin");
-        setGroup([0,2,3]);
-        setAvatar("/avatar/3E1B26799705F4E3047844E5A441B4E6.jpg");
-        router.push('/')
+        Message.error('请同意协议后登录')
     }else{
-        Message.info('用户名或密码错误')
-        return false
+        requests('/api/lark_auth_uri').then((resp)=>{
+            window.open(resp.data.u_auth_uri, '_self')
+        }
+        ).catch((e)=>{
+            console.log(e)
+        })
     }
 }
 </script>

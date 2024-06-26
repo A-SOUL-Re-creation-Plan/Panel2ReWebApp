@@ -15,7 +15,7 @@ import DoubleLayout_LeftImg from '@/components/DoubleLayout_LeftImg.vue'
 import CenterCard from './../../components/CenterCard.vue'
 
 import { ref } from 'vue'
-const contact = ref("管理员")
+const contact = ref("Panel2Re维护团队")
 </script>
 
     
