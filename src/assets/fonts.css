@@ -1,13 +1,13 @@
 
 @font-face {
   font-family: "HarmonyOSSansSC";
-  src: url("@/assets/fonts/HarmonyOS_Sans_SC_Regular.ttf");
+  src: url("@/assets/fonts/HarmonyOS_Sans_SC_Regular.woff2");
 }
 
 @font-face {
     font-family: "HarmonyOSSansSC";
     font-weight: bold;
-    src: url("@/assets/fonts/HarmonyOS_Sans_SC_Bold.ttf");
+    src: url("@/assets/fonts/HarmonyOS_Sans_SC_Bold.woff2");
 }
 
 #app *{
