@@ -67,8 +67,9 @@ router.beforeEach((to,from,next)=>{
   if(usrID.id.value==''){
     return next("/user/login");
   }
-  next()  
+  next()
 })
+
 
 
 export default router

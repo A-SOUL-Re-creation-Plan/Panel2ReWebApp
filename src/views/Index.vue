@@ -1,5 +1,5 @@
 <template>
-    <a-layout id="index">
+    <a-layout class="index">
         <a-row :gutter="20">
             <a-col id="index_a" :span="11">
                 <DynamicsList/>
@@ -15,12 +15,12 @@
 <script setup>
 import DynamicsList from '@/components/Bilibili/DynamicsList.vue'
 import DynamicsList2Re from '@/components/Bilibili/DynamicList2Re.vue'
-import LarkCalendar from '@/components/LarkCalendar.vue'
+import LarkCalendar from '@/components/Lark/LarkCalendar.vue'
 </script>
 
     
 <style>
-    #index>.arco-row>.arco-col > *{
+    .index>.arco-row>.arco-col > *{
         margin-bottom: 15px;
     }
 </style>

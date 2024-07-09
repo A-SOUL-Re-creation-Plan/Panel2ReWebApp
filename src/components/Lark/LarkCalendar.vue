@@ -1,5 +1,5 @@
 <script setup>
-import requests from '@/utils/requests'
+import { get_uat as get } from '@/utils/requests/uat_proxy'
 import FullCalendar from '@fullcalendar/vue3'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -7,14 +7,23 @@ import { Modal } from '@arco-design/web-vue'
 import { onMounted, ref } from 'vue';
 import IntroGen from '@/utils/groups/video/IntroGeneratorLark';
 const lark_cal = ref([])
-async function getLarkCalendar(){
-    requests.get('/api/lark_calendar_list').then(resp=>{
-        // lark_cal.value = resp.data
-        for(let i=0;i<resp.data.length;i++){
-            lark_cal.value.push(resp.data[i])
+const calendarLoading = ref(true)
+// const getLarkCalendar = ()=>{
+//     // requests.get('/api/lark_calendar_list').then(resp=>{
+//     //     // lark_cal.value = resp.data
+//     //     for(let i=0;i<resp.data.length;i++){
+//     //         lark_cal.value.push(resp.data[i])
+//     //     }
+//     // }).catch(e=>{
+//     //     console.log(e)
+//     // })
+// }
+async function getLarkCalendar (){
+    await get('/api/lark_calendar_list').then(resp=>{
+        for(let i=0;i<resp.length;i++){
+            lark_cal.value.push(resp[i])
         }
-    }).catch(e=>{
-        console.log(e)
+        calendarLoading.value = false;
     })
 }
 const calendarOptions = {
@@ -52,7 +61,7 @@ onMounted(()=>{
 </script>
 
 <template>
-<a-card title="飞书日程 (beta)">
+<a-card title="飞书日程 (beta)" :loading="calendarLoading">
     <FullCalendar :options="calendarOptions"/>
 </a-card>
 </template>
