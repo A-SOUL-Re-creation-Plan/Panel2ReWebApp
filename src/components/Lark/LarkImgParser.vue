@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { checkUserAccessToken } from '@/utils/requests/uat_refresher';
 import { post_uat as post } from '@/utils/requests/uat_proxy';
 import LarkImgParser_Log from '@/components/Lark/LarkImgParser_Log.vue'
+import { Notification } from '@arco-design/web-vue';
 const user = useUserStore()
 const headers = {
     "Panel2Re-Authorization": user.token
@@ -25,14 +26,18 @@ const inputImgLinkCancel = ()=>{
     linkInputVisible.value = false;
 }
 const inputImgLink = ref({})
+const inputImgLinkOKLoading = ref(false)
 const inputImgLinkOK = function(){
     post('/api/lark_calendar_parse/link',inputImgLink.value).then(resp=>{
         if(resp.data.msg=='success'){
             HuaTuoML.value = resp.data.uuid;
             linkInputVisible.value = false;
+            return true;
         }
     }).catch(e=>{
-        console.log(e)
+        Notification.warning({content: e.response.data.msg});
+        linkInputVisible.value = false;
+        return true;
     })
 }
 </script>
@@ -51,6 +56,7 @@ const inputImgLinkOK = function(){
                     :headers=headers
                     :on-before-upload=beforeUpload
                     @success="imgUploadSuccess"
+                    :ok-loading="false"
                 />
                 <a-button @click="inputImgLinkShow">输入图片直链</a-button>
             </a-space>
