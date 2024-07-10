@@ -18,10 +18,9 @@ async function checkUserAccessToken(){
         router.push("/user/login");
       },
     });
-    return false;
   } else if (user.at_expires.value <= Date.parse(new Date()) / 1000 || user.token.value.length <= 3) {
     console.log("setting new token")
-    requests.get("/api/lark_refresh_uat",{headers: headers}).then((resp) => {
+    await requests.get("/api/lark_refresh_uat",{headers: headers}).then((resp) => {
       if (resp.data.code == 0) {
         user.token.value = resp.data.data.access_token;
         user.refresh_token.value = resp.data.data.refresh_token;
@@ -30,7 +29,6 @@ async function checkUserAccessToken(){
       }
     })
   }
-  return true;
 }
 
 export { checkUserAccessToken }
