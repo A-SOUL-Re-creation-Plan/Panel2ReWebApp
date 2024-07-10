@@ -10,8 +10,8 @@ var headers = {
   "Panel2Re-Authorization": `${user.token.value}`,
 };
 async function get_uat (url, params={}){
-  var requestAllowed = await checkUserAccessToken()
-  if (requestAllowed)
+  var requestAllowed = await checkUserAccessToken();
+  if(requestAllowed){
     await requests
       .get(url, { params: params, headers: headers })
       .then((resp) => {
@@ -20,11 +20,12 @@ async function get_uat (url, params={}){
       .catch((e) => {
         console.log(e);
       });
+  }
   return data_;
 }
 async function post_uat (url, payload={}){
   var requestAllowed = await checkUserAccessToken();
-  if (requestAllowed)
+  if(requestAllowed){
     await requests
       .post(url, payload, { headers: headers })
       .then((resp) => {
@@ -33,6 +34,7 @@ async function post_uat (url, payload={}){
       .catch((e) => {
         console.log(e);
       });
+  }
   return data_;
 }
 export { get_uat, post_uat };
