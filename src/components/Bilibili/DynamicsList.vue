@@ -1,8 +1,5 @@
 <template>
     <a-card title="哔哩哔哩动态">
-        <template #extra>
-            <a-link @click="getList({'refresh':1})"><icon-sync /></a-link>
-        </template>
         <a-row :gutter="15">
             <a-empty v-if="d_data==''"/>
             <a-col class="bili_dynamic" v-for="i in d_data" :span="12" :key="i.id" v-else>
@@ -59,9 +56,8 @@ var offset = ""
 var has_more = false
 const busyFetchDynamic = ref(false)
 
-function getList(args){
-    const params = args
-    requests.get('/api/bili_dynamic',{baseURL: baseURL,params: params}).then(res=>{
+function getList(){
+    requests.get('/api/bili_dynamic',{baseURL: baseURL}).then(res=>{
         d_data.value=res.data
     }).catch(err=>{
         d_data.value=''
@@ -103,7 +99,7 @@ const dynamicScrollMonitor = ()=>{
     }
 }
 onMounted(()=>{
-    getList({});
+    getList();
 });
 </script>
 
