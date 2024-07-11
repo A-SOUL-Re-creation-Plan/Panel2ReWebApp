@@ -1,5 +1,6 @@
-import formatDate from "@/utils/dateFormatter";
+import { formatDateCN_DateOnly } from '@/utils/dateFormatter'
 function IntroGen(info) {
+    let date = formatDateCN_DateOnly(info.startStr)
     let ext = info.extendedProps;
     let title_i = info.title;
     let summary = ext.live_title;
@@ -38,10 +39,11 @@ function IntroGen(info) {
             space_lr += `\n\n${partner.partner_full}\n直播间：https://live.bilibili.com/${partner.partner_liveroom}\n个人主页：https://space.bilibili.com/${partner.partner_space}`;
         }
     }
+    let r_0 = `直播日期：${date}\n`;
     let r_1 = `${title}【${summary}】\n`;
     let r_2 = '--------------------------------------------------------\n';
     let r_3 = space_lr;
-    let r = r_1 + r_2 + r_3;
+    let r = r_0 + r_1 + r_2 + r_3;
     return r
 }
 export default IntroGen;

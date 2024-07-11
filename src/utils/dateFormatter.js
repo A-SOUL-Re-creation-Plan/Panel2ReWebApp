@@ -1,5 +1,5 @@
 //时间戳转换方法    date:时间戳数字
-function formatDate(date) {
+function formatDate_ZeroFill(date) {
   var date = new Date(date);
   var YY = date.getFullYear() + "/";
   var MM =
@@ -15,4 +15,9 @@ function formatDate(date) {
   var ss = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
   return YY + MM + DD + " " + hh + mm + ss;
 }
-export default formatDate
+function formatDateCN_DateOnly(date){
+  var date = new Date(date);
+  return `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;
+}
+export { formatDateCN_DateOnly }
+export default formatDate_ZeroFill
