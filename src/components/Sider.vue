@@ -16,11 +16,18 @@
         <template #title>封面组</template>
         <a-menu-item key="2-1"><RouterLink to='/groups/cover'>主页</RouterLink></a-menu-item>
       </a-sub-menu>
+      <a-sub-menu key="3">
+        <template #icon><icon-tool /></template>
+        <template #title>小工具</template>
+        <a-menu-item key="3-1"><RouterLink to='/groups/tools'>BiliCookie获取</RouterLink></a-menu-item>
+      </a-sub-menu>
     </a-menu>
     
 </template>
     
 <script setup>
+import { RouterLink } from 'vue-router';
+
 
 </script>
 

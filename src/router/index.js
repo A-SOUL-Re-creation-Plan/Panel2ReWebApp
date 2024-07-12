@@ -40,6 +40,10 @@ const router = createRouter({
           path: "cover",
           component: () => import("@/views/groups/cover/Main.vue")
         },
+        {
+          path: "tools",
+          component: () => import("@/views/groups/tools/Main.vue")
+        },
       ]
     },
     {
