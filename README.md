@@ -1,5 +1,7 @@
 # Panel2Re
 
+![Introduction](README.png)
+
 ## 配置环境
 
 ```sh
