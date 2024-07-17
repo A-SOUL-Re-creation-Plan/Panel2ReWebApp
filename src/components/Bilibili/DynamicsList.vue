@@ -54,7 +54,6 @@ const drawer_info = ref({})
 
 var offset = ""
 var has_more = false
-const busyFetchDynamic = ref(false)
 
 function getList(){
     requests.get('/api/bili_dynamic',{baseURL: baseURL}).then(res=>{
@@ -78,6 +77,7 @@ function getUserInfo(uid){
 }
 function showDrawer(uid){
     drawer_info.value = {}
+    offset = ""
     getUserInfo(uid);
     bili_dynamic_viewer_visible.value = true
     drawer_uid.value=uid
