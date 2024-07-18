@@ -4,34 +4,48 @@ import { storeToRefs } from "pinia";
 const user = storeToRefs(useUserStore())
 import requests from './index'
 var data_ = ""
-async function get_uat (url, params={}){
-  await checkUserAccessToken()
-  var headers = {
-    "Panel2Re-Authorization": user.token.value,
-  };
-  await requests
-    .get(url, { params: params, headers: headers })
-    .then((resp) => {
-      data_ = resp.data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  return data_;
+function get_uat (url, params={}){
+  return new Promise((resolve, reject)=>{
+    checkUserAccessToken
+      .then(() => {
+        var headers = {
+          "Panel2Re-Authorization": user.token.value,
+        };
+        requests
+          .get(url, { params: params, headers: headers })
+          .then((resp) => {
+            resolve(resp)
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e)
+        reject(e)
+      });
+  })
 }
-async function post_uat (url, payload={}){
-  await checkUserAccessToken();
-  var headers = {
-    "Panel2Re-Authorization": user.token.value,
-  };
-  await requests
-    .post(url, payload, { headers: headers })
-    .then((resp) => {
-      data_ = resp.data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-  return data_;
+function post_uat (url, payload={}){
+  return new Promise((resolve, reject) => {
+    checkUserAccessToken
+      .then(() => {
+        var headers = {
+          "Panel2Re-Authorization": user.token.value,
+        };
+        requests
+          .post(url, payload, { headers: headers })
+          .then((resp) => {
+            resolve(resp);
+          })
+          .catch((e) => {
+            reject(e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
+  });
 }
 export { get_uat, post_uat };
