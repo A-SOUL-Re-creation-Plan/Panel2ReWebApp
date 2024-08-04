@@ -8,7 +8,6 @@
                         layout="vertical"
                         :style="{width: '30vw'}"
                         :model="login_form"
-                        @submit="handleSubmit"
                     >
                         <a-form-item
                             field="id"
@@ -45,7 +44,7 @@
                         <a-form-item>
                             <a-space fill>
                                 <a-button @click="LarkSSORedirect">使用 飞书SSO 登录</a-button>
-                                <a-button html-type="submit" disabled>Login</a-button>
+                                <a-button disabled>Login</a-button>
                             </a-space>
                         </a-form-item>
                     </a-form>
