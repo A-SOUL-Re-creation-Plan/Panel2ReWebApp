@@ -38,11 +38,11 @@ const calendarOptions = {
     timeZone: 'Asia/Shanghai',
     events: lark_cal.value,
     headerToolbar: {
-        left: 'prev,next',
+        left: '',
         center: 'title',
         right: ''
     },
-    contentHeight: 345,
+    contentHeight: 340,
     firstDay: 1,
     eventClick:(info)=>{
         info.jsEvent.preventDefault();
@@ -50,7 +50,7 @@ const calendarOptions = {
         let t = info.event
         IntroModalLR.value = info.event.url
         IntroModalContent.value = IntroGen(t)
-    }
+    },
 }
 onMounted(()=>{
     getLarkCalendar();
@@ -59,7 +59,11 @@ onMounted(()=>{
 
 <template>
 <a-card title="飞书日程 (beta)" :loading="calendarLoading">
-    <FullCalendar :options="calendarOptions"/>
+    <FullCalendar :options="calendarOptions">
+        <template v-slot:noEventsContent>
+            暂无日程
+        </template>
+    </FullCalendar>
 </a-card>
 <a-modal
     :visible="IntroModalVisible"
