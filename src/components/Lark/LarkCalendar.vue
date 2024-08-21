@@ -23,8 +23,8 @@ const IntroModalContentCopy = () => {
 async function getLarkCalendar (){
     get('/api/lark_calendar_list').then(resp=>{
         console.log("Calendar Init")
-        for(let i=0;i<resp.data.length;i++){
-            lark_cal.value.push(resp.data[i])
+        for(let i=0;i<resp.data.data.length;i++){
+            lark_cal.value.push(resp.data.data[i])
         }
         calendarLoading.value = false;
     }).catch(e=>{
