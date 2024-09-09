@@ -1,5 +1,5 @@
 <script setup>
-import Main from '@/views/Main.vue';
+import Main from '@/layout/Main.vue';
 const appName = import.meta.env.VITE_APP_NAME;
 const dev = import.meta.env.DEV;
 // console.log(import.meta.env)

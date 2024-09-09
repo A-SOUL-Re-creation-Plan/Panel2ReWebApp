@@ -34,15 +34,15 @@ const router = createRouter({
       children: [
         {
           path: "video",
-          component: () => import("@/views/groups/video/Main.vue")
+          component: () => import("@/layout/groups/video/Main.vue")
         },
         {
           path: "cover",
-          component: () => import("@/views/groups/cover/Main.vue")
+          component: () => import("@/layout/groups/cover/Main.vue")
         },
         {
           path: "tools",
-          component: () => import("@/views/groups/tools/Main.vue")
+          component: () => import("@/layout/groups/tools/Main.vue")
         },
       ]
     },

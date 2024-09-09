@@ -19,10 +19,10 @@
     
 <script setup>
 import { useRoute } from "vue-router";
-import Nav from '@/components/Nav.vue'
-import Container from '@/components/Container.vue'
-import Footer from "@/components/Footer.vue"
-import Sider from '@/components/Sider.vue'
+import Nav from '@/layout/Nav.vue'
+import Container from '@/layout/Container.vue'
+import Footer from "@/layout/Footer.vue"
+import Sider from '@/layout/Sider.vue'
 import { useUserStore } from "@/stores/user";
 const route = useRoute()
 const user = useUserStore()
