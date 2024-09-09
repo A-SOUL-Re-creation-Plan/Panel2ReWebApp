@@ -20,19 +20,20 @@
     flex:1;
     flex-direction: row;
     height: 100%;
+    background: url('https://s2.loli.net/2023/12/31/zNjOHh7STDdy9wp.png') center no-repeat;
+    background-size: cover;
 }
 #dl-left{
-    width: 40%
-}
-#dl-left{
-    background: url('@/assets/b9cbe91375bd601177fe3df13a6cdb69.png') center center / cover no-repeat;
+    width: 40%;
 }
 #dl-right{
     width: 60%;
     display: flex;
     justify-content: center;
     align-content: center;
-    margin: 5vh 3.5vw;
+    padding: 5vh 3.5vw;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(5px);
 }
 </style>
     
