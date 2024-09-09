@@ -33,7 +33,7 @@ const qr_check = (key) => {
                 content: resp.data.cookies,
                 modalStyle:{'overflow-wrap': 'break-word'}
             })
-            button_loading.value = false;
+            // button_loading.value = false;
             qr_src.value = undefined;
             qr_message.value = undefined;
             return;
@@ -44,7 +44,7 @@ const qr_check = (key) => {
                 title: "二维码已失效",
                 content: "请重新生成"
             })
-            button_loading.value = false;
+            // button_loading.value = false;
             qr_src.value = undefined;
             qr_message.value = undefined;
             return;
