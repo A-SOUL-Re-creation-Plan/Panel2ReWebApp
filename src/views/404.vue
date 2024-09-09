@@ -1,16 +1,22 @@
 <template>
     <div id="aoa">
-        <CenterCard>
-            <template #content>
-                <b style="font-size: 25px;">你似乎来到了知识的荒原。</b>
+        <a-result status="404" subtitle="你似乎来到了知识的荒原。">
+            <template #extra>
+                <a-space>
+                    <a-button type="primary" @click="go">返回主页</a-button>
+                </a-space>
             </template>
-        </CenterCard>
+        </a-result>
     </div>
 </template>
     
 <script setup>
-import CenterCard from './../components/CenterCard.vue'
-
+// import CenterCard from '@/components/CenterCard.vue'
+import { useRouter } from 'vue-router';
+const router = useRouter()
+const go = ()=>{
+    router.push('/')
+}
 </script>
 
     
@@ -19,7 +25,9 @@ import CenterCard from './../components/CenterCard.vue'
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: auto auto;
         width: 100%;
+        height: 100vh;
     }
 </style>
     
