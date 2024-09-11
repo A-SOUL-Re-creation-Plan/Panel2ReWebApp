@@ -5,7 +5,12 @@
         </a-layout-header>
         <a-layout id="content">
             <a-layout-sider v-if="!route.meta.fs&&!user.id==''">
-                <Sider/>
+                <div id="sider">
+                    <Sider/>
+                    <div id="about">
+                        <RouterLink to="/about">关于</RouterLink>
+                    </div>
+                </div>
             </a-layout-sider>
             <a-layout-content id="content_c">
                 <Container/>
@@ -32,6 +37,23 @@ const user = useUserStore()
 #content, #content_c{
     overflow-x: hidden;
     scrollbar-width: thin;
+}
+#sider{
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    min-height: 100%;
+}
+#about{
+    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: 10px;
+    justify-content: center;
+}
+#about > a{
+    color: gray;
+    text-decoration: none;
 }
 </style>
     

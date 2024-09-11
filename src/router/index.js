@@ -22,8 +22,8 @@ const router = createRouter({
         },
         {
           path: "lark_sso_callback",
-          component: () => import('@/views/user/LarkSSOReturn.vue')
-        }
+          component: () => import("@/views/user/LarkSSOReturn.vue"),
+        },
       ],
       meta: {
         fs: true,
@@ -34,17 +34,21 @@ const router = createRouter({
       children: [
         {
           path: "video",
-          component: () => import("@/layout/groups/video/Main.vue")
+          component: () => import("@/layout/groups/video/Main.vue"),
         },
         {
           path: "cover",
-          component: () => import("@/layout/groups/cover/Main.vue")
+          component: () => import("@/layout/groups/cover/Main.vue"),
         },
-        {
-          path: "tools",
-          component: () => import("@/layout/groups/tools/Main.vue")
-        },
-      ]
+      ],
+    },
+    {
+      path: "/tools",
+      component: () => import("@/layout/groups/tools/Main.vue"),
+    },
+    {
+      path: "/about",
+      component: () => import("@/views/about.vue")
     },
     {
       path: "/:catchAll(.*)",
