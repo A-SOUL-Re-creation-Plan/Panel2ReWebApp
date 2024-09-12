@@ -83,7 +83,7 @@ function showDrawer(uid){
     drawer_uid.value=uid
 }
 const dynamicScrollMonitor = ()=>{
-    if(drawer_info.value.length){
+    if(drawer_info.value.length && has_more == true){
         console.log("Reached")
         var params = {
             'uid': drawer_uid.value,
@@ -93,9 +93,11 @@ const dynamicScrollMonitor = ()=>{
             res.data.items.forEach(d => {
                 drawer_info.value.push(d)
             });
-            offset = res.data.offset  
+            offset = res.data.offset
             has_more = res.data.has_more
         })
+    }else{
+        console.log("No more dynamic")
     }
 }
 onMounted(()=>{
