@@ -8,9 +8,9 @@ const dynamic_type = {
     'DYNAMIC_TYPE_FORWARD': ['转发动态','FORWARD'],
     'DYNAMIC_TYPE_DRAW': ['图文','DRAW'],
     'DYNAMIC_TYPE_ARTICLE': ['专栏','ARTICLE'],
-    'DYNAMIC_TYPE_LIVE_RCMD': ['开播', 'LIVE_RCMD']
+    'DYNAMIC_TYPE_LIVE_RCMD': ['开播', 'LIVE_RCMD'],
+    'DYNAMIC_TYPE_NONE': ['失效', 'NONE']
 }
-
 const t = dynamic_type[data.type][0]
 const c = dynamic_type[data.type][1]
 const n = data.modules.module_author.name
@@ -24,9 +24,10 @@ import FORWARD from '@/components/Bilibili/DynamicDetails/FORWARD.vue';
 import WORD from '@/components/Bilibili/DynamicDetails/WORD.vue';
 import AV from '@/components/Bilibili/DynamicDetails/AV.vue';
 import LIVE_RCMD from '@/components/Bilibili/DynamicDetails/LIVE_RCMD.vue';
+import NONE from '@/components/Bilibili/DynamicDetails/NONE.vue';
 export default{
     components: {
-        ARTICLE,DRAW,FORWARD,WORD,AV,LIVE_RCMD
+        ARTICLE,DRAW,FORWARD,WORD,AV,LIVE_RCMD,NONE
     }
 }
 </script>
