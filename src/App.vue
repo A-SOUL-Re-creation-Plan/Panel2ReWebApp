@@ -1,9 +1,13 @@
 <script setup>
+import { onMounted } from 'vue';
+import { useUserStore } from './stores/user';
 import Main from '@/layout/Main.vue';
 const appName = import.meta.env.VITE_APP_NAME;
-const dev = import.meta.env.DEV;
 // console.log(import.meta.env)
 document.title = appName;
+onMounted(()=>{
+  useUserStore().reset()
+})
 </script>
 
 <template>

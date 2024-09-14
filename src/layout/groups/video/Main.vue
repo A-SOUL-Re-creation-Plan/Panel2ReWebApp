@@ -6,7 +6,7 @@
             </a-col>
             <a-col id="vg-index_b" :span="10">
                 <ArchiveStatus/>
-                <LarkImgParser/>
+                <!-- <LarkImgParser/> -->
             </a-col>
         </a-row>
     </a-layout>
@@ -15,7 +15,7 @@
 <script setup>
 import ArchiveList from '@/components/Bilibili/Archives/ArchiveList.vue';
 import ArchiveStatus from '@/components/Bilibili/Archives/ArchiveStatus.vue';
-import LarkImgParser from '@/components/Lark/LarkImgParser.vue';
+// import LarkImgParser from '@/components/Lark/LarkImgParser.vue';
 </script>
 
     

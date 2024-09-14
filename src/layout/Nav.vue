@@ -2,10 +2,10 @@
     import { ref, onMounted } from 'vue'
     import { storeToRefs } from 'pinia';
     import Logo from '@/components/Logo.vue'
-    import { useUserStore } from '@/stores/user';
+    import { useUserLegacyStore } from '@/stores/user_legacy';
     import { useRouter } from 'vue-router';
     const router = useRouter();
-    const user = useUserStore();
+    const user = useUserLegacyStore();
     const isLogin = ref(false);
     const avatarImage = ref(storeToRefs(user).avatar);
     const logout = ()=>{
@@ -13,7 +13,7 @@
         router.push('/user/login')
     }
     onMounted(()=>{
-        isLogin.value = !user.id==''
+        isLogin.value = user.id!=0
         // console.log("isLogin="+isLogin.value);
     })
 </script>
@@ -27,7 +27,7 @@
         <a-layout id="nav-r">
             <a-dropdown trigger="hover">
                 <a-avatar>
-                    <!-- <img src="@/assets/1df27add70b02a21e9aaeac50f15bfe4547510303.jpg" alt="avatar"/> -->
+                    <!-- <img src="@/assets/default.jpg" alt="avatar"/> -->
                     <img :src="avatarImage" alt="avatar"/>
                 </a-avatar>
                 <template #content v-if="!isLogin">

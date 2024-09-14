@@ -35,7 +35,7 @@ onMounted(()=>{
             <a-link @click="refresh2ReDynamics()"><icon-sync /></a-link>
         </template>
         <div class="bili_dynamics_list">
-            <a-list :bordered="false" :loading="Re_Loading" max-height="350px">
+            <a-list :bordered="false" :loading="Re_Loading" max-height="650px">
                 <template v-for="i in Re_info">
                     <a-list-item v-if="!i.modules.module_tag" class="bili_dynamics_list_item">
                         <DynamicDetail :content="i"/>

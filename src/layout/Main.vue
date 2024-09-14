@@ -28,9 +28,9 @@ import Nav from '@/layout/Nav.vue'
 import Container from '@/layout/Container.vue'
 import Footer from "@/layout/Footer.vue"
 import Sider from '@/layout/Sider.vue'
-import { useUserStore } from "@/stores/user";
+import { useUserLegacyStore } from "@/stores/user_legacy";
 const route = useRoute()
-const user = useUserStore()
+const user = useUserLegacyStore()
 </script>
 
 <style>

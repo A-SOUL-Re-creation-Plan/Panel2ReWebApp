@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user';
+import { useUserLegacyStore } from '@/stores/user_legacy';
 import { storeToRefs } from 'pinia';
 
 const router = createRouter({
@@ -70,12 +70,16 @@ const router = createRouter({
 router.beforeEach((to,from,next)=>{
   if(to.path=='/user/login') return next();
   if(to.path=='/user/register') return next();
-  if(to.path=="/user/lark_sso_callback") return next();
-  const usrID = storeToRefs(useUserStore())
-  if(usrID.id.value==''){
+  // if(to.path=="/user/lark_sso_callback") return next();
+  const data = useUserLegacyStore();
+  const { token, expire_at } = storeToRefs(data);
+  if (token.value != "") {
+    if (expire_at.value >= Date.now()) {
+      return next();
+    }
     return next("/user/login");
   }
-  next()
+  next("/user/login");
 })
 
 

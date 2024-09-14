@@ -5,7 +5,7 @@
                 <DynamicsList/>
             </a-col>
             <a-col id="index_b" :span="13">
-                <LarkCalendar/>
+                <!-- <LarkCalendar/> -->
                 <DynamicsList2Re/>
             </a-col>
         </a-row>
@@ -15,7 +15,7 @@
 <script setup>
 import DynamicsList from '@/components/Bilibili/DynamicsList.vue'
 import DynamicsList2Re from '@/components/Bilibili/DynamicList2Re.vue'
-import LarkCalendar from '@/components/Lark/LarkCalendar.vue'
+// import LarkCalendar from '@/components/Lark/LarkCalendar.vue'
 </script>
 
     
