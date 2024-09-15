@@ -48,8 +48,8 @@ onMounted(()=>{
     
 </template>
 
-<style scoped>
-    .bili_dynamics_list_item{
-        max-width: 100%;
+<style>
+    .bili_dynamics_list > *{
+        width: 100%;
     }
 </style>

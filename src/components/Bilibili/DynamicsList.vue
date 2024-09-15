@@ -2,7 +2,7 @@
     <a-card title="哔哩哔哩动态">
         <a-row :gutter="15">
             <a-empty v-if="d_data==''"/>
-            <a-col class="bili_dynamic" v-for="i in d_data" :span="12" :key="i.id" v-else>
+            <a-col class="bili_dynamic" v-for="i in d_data" :xl="12" :sm="24" :key="i.id" v-else>
                 <a-card class="bili_dynamic_item" hoverable @click="showDrawer(i.bili_uid)">
                     <a-space size="large">
                         <a-avatar :size="54">
@@ -18,8 +18,8 @@
         :visible="bili_dynamic_viewer_visible"
         @ok="bili_dynamic_viewer_visible=false"
         @cancel="bili_dynamic_viewer_visible=false"
-        width="650px"
         class="bili_dynamics_drawer"
+        :width="drawer_width"
     >
         <template #title>
             动态查看{{ drawer_uid }}
@@ -51,6 +51,7 @@ const d_data = ref()
 const bili_dynamic_viewer_visible = ref(false)
 const drawer_uid = ref(2)
 const drawer_info = ref({})
+const drawer_width = ref("45%")
 
 var offset = ""
 var has_more = false
@@ -100,18 +101,29 @@ const dynamicScrollMonitor = ()=>{
         console.log("No more dynamic")
     }
 }
+const getWindowWidth = ()=>{
+    if(window.innerWidth <= 864){
+        drawer_width.value = "100%"
+    }else{
+        drawer_width.value = "45%"
+    }
+}
 onMounted(()=>{
     getList();
+    getWindowWidth();
+    window.addEventListener('resize',getWindowWidth)
 });
 </script>
 
     
-<style scoped>
+<style>
     .bili_dynamic{
         margin-top: 5px;
         margin-bottom: 5px;
+        width: 100%;
     }
     .bili_dynamic_item{
         cursor: pointer;
+        width: 100%;
     }
 </style>

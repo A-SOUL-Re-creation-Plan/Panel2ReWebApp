@@ -1,10 +1,10 @@
 <template>
     <a-layout class="index">
-        <a-row :gutter="20">
-            <a-col id="index_a" :span="11">
+        <a-row :gutter="{md: 20}">
+            <a-col id="index_a" :lg="11" :sm="24">
                 <DynamicsList/>
             </a-col>
-            <a-col id="index_b" :span="13">
+            <a-col id="index_b" :lg="13" :sm="24">
                 <!-- <LarkCalendar/> -->
                 <DynamicsList2Re/>
             </a-col>

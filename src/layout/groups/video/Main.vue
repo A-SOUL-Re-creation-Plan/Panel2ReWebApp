@@ -1,10 +1,10 @@
 <template>
     <a-layout class="index" id="vg-index">
         <a-row :gutter="20">
-            <a-col id="vg-index_a" :span="14">
+            <a-col id="vg-index_a" :xl="14" :sm="24">
                 <ArchiveList/>
             </a-col>
-            <a-col id="vg-index_b" :span="10">
+            <a-col id="vg-index_b" :xl="10" :sm="24">
                 <ArchiveStatus/>
                 <!-- <LarkImgParser/> -->
             </a-col>

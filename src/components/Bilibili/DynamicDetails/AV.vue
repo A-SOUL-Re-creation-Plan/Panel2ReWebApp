@@ -12,19 +12,26 @@ function go(bvid){
 
 <template>
     <a-card :bordered="false">
-        <template #cover> 
-            <img :src="data.cover" referrerPolicy="no-referrer" @click="go(data.bvid)"/>
-        </template>
-        <template #title>
+        <div class="bili_dynamic_title">
             {{ data.title }}
-        </template>
+        </div>
         <template #actions>
             <span class="icon-hover" @click="go(data.bvid)"> <IconShareInternal /> 观看视频 </span>
         </template>
+        <div>
+            <img :src="data.cover"  referrerPolicy="no-referrer" @click="go(data.bvid)" style="object-fit: cover;width: 100%;"/>
+        </div>
         <div v-html="data.desc" @click="go(data.bvid)"/>
     </a-card>
 </template>
 
-<style>
-
+<style scoped>
+.bili_av_title{
+    color: #000000;
+    font-weight: bold;
+    font-size: medium;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: lightgray 1px solid;
+}
 </style>

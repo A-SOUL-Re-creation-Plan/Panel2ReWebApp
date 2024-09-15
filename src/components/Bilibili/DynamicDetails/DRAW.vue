@@ -22,7 +22,7 @@ function go(url){
             </span>
             <a-row :gutter="10">
                 <a-col :span="8" v-for="i in imgs">
-                    <img :src="i.src" width="100%" @click="go(i.src)" class="bili_dynamic_drawimg_items" referrerPolicy="no-referrer"/>
+                    <img :src="i.src+'@400w_400h_1e_1c.png'" width="100%" @click="go(i.src)" class="bili_dynamic_drawimg_items" referrerPolicy="no-referrer"/>
                 </a-col>
             </a-row>
         </div>

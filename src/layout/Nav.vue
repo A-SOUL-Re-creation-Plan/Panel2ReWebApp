@@ -9,6 +9,7 @@
     const user = useUserLegacyStore();
     const isLogin = ref(false);
     const avatarImage = ref(storeToRefs(user).avatar);
+    const userName = ref(storeToRefs(user).name);
     const logout = ()=>{
         requests.delete('/api/user/logout_legacy').then(resp=>{
             if(resp.data.code==0){
@@ -33,10 +34,15 @@
         </div>
         <a-layout id="nav-r">
             <a-dropdown trigger="hover">
-                <a-avatar>
-                    <!-- <img src="@/assets/default.jpg" alt="avatar"/> -->
-                    <img :src="avatarImage" alt="avatar"/>
-                </a-avatar>
+                <div id="nav-r_info">
+                    <a-avatar>
+                        <!-- <img src="@/assets/default.jpg" alt="avatar"/> -->
+                        <img :src="avatarImage" alt="avatar"/>
+                    </a-avatar>
+                    <span id="nav-r_uname" style="vertical-align:middle;">{{ userName }}</span>
+                </div>
+                
+                
                 <template #content v-if="!isLogin">
                     <a-doption>
                         <router-link class="router-link" to="/user/login">登录已有账户</router-link>
@@ -82,8 +88,17 @@
     align-items: end;
     justify-content: center;
 }
+#nav-r_info > *{
+    margin-left: 5px;
+    margin-right: 5px;
+}
 .router-link{
     text-decoration: none;
     color: rgb(0,0,0);
+}
+@media screen and (max-width: 864px) {
+    #nav-r_uname{
+        display:none;
+    }
 }
 </style>

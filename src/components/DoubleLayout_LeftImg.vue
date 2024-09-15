@@ -35,5 +35,13 @@
     background: rgba(255,255,255,0.6);
     backdrop-filter: blur(5px);
 }
+@media screen and (max-width: 864px) {
+    #dl-left{
+        display:none;
+    }
+    #dl-right{
+        width: 100%;
+    }
+}
 </style>
     

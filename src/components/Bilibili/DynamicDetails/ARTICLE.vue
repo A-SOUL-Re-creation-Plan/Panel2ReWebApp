@@ -12,12 +12,12 @@ function go(url){
 <template>
 
     <a-card :bordered="false">
-        <template #cover v-for="i in data.covers"> 
-            <img :src="i" referrerPolicy="no-referrer" @click="go(data.jump_url)"/>
-        </template>
-        <template #title>
+        <div class="bili_dynamic_title">
             {{ data.title }}
-        </template>
+        </div>
+        <div v-for="i in data.covers"> 
+            <img :src="i" referrerPolicy="no-referrer" @click="go(data.jump_url)"/>
+        </div>
         <template #actions>
             <span @click="go(data.jump_url)"> <IconShareInternal /> 查看全文 </span>
         </template>
