@@ -4,13 +4,20 @@
     import Logo from '@/components/Logo.vue'
     import { useUserLegacyStore } from '@/stores/user_legacy';
     import { useRouter } from 'vue-router';
+    import requests from '@/utils/requests'
     const router = useRouter();
     const user = useUserLegacyStore();
     const isLogin = ref(false);
     const avatarImage = ref(storeToRefs(user).avatar);
     const logout = ()=>{
-        user.reset();
-        router.push('/user/login')
+        requests.delete('/api/user/logout_legacy').then(resp=>{
+            if(resp.data.code==0){
+                user.reset();
+                router.push('/user/login')
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
     }
     onMounted(()=>{
         isLogin.value = user.id!=0
