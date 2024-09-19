@@ -40,7 +40,7 @@ const IntroCopy = (text) => {
             <a-col :span="20">
                 <a-select placeholder="直播类型" v-model:model-value="introInfo.live_type">
                     <template v-for="i in LiveTypeDict">
-                        <a-option v-if="i.includes(LiveRoomListDict[roomSelected]) && !i.includes('向晚')" :label="i" :value="i" />
+                        <a-option v-if="i.includes(LiveRoomListDict[roomSelected]) && !i.includes('向晚') && !i.includes('A-SOUL')" :label="i" :value="i" />
                         <a-option v-if="i.includes('A-SOUL')" :label="i" :value="i" />
                     </template>
                     <a-option>特别节目/其他</a-option>
