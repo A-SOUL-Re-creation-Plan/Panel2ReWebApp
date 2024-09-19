@@ -31,4 +31,7 @@ onMounted(()=>{
     height: inherit;
     max-height: inherit;
   }
+  .index>.arco-row>.arco-col > *{
+    margin-bottom: 15px;
+  }
 </style>

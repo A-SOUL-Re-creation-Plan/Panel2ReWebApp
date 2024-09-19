@@ -20,8 +20,6 @@ import DynamicsList2Re from '@/components/Bilibili/DynamicList2Re.vue'
 
     
 <style>
-    .index>.arco-row>.arco-col > *{
-        margin-bottom: 15px;
-    }
+
 </style>
     
