@@ -7,6 +7,7 @@
             <a-col id="vg-index_b" :xl="10" :sm="24">
                 <ArchiveStatus/>
                 <!-- <LarkImgParser/> -->
+                 <IntroGeneratorLegacy/>
             </a-col>
         </a-row>
     </a-layout>
@@ -16,6 +17,7 @@
 import ArchiveList from '@/components/Bilibili/Archives/ArchiveList.vue';
 import ArchiveStatus from '@/components/Bilibili/Archives/ArchiveStatus.vue';
 // import LarkImgParser from '@/components/Lark/LarkImgParser.vue';
+import IntroGeneratorLegacy from '@/components/IntroGeneratorLegacy.vue'
 </script>
 
     
