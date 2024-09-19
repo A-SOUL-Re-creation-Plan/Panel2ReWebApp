@@ -75,8 +75,8 @@ const IntroCopy = (text) => {
         <div><b>简介</b></div>
         <div>{{ introGen(introInfo) }}</div>
         <template #footer>
-            <a-button @click="IntroCopy(LiveRoomList(roomSelected))">复制转载地址</a-button>
-            <a-button @click="IntroCopy(introGen(introInfo))" type="primary">复制简介</a-button>
+            <a-button @click="IntroCopy(LiveRoomList(roomSelected));resultVisible=false">复制转载地址</a-button>
+            <a-button @click="IntroCopy(introGen(introInfo));resultVisible=false" type="primary">复制简介</a-button>
         </template>
     </a-modal>
 </template>
