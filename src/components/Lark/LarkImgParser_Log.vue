@@ -8,7 +8,7 @@ const HuaTuoMLLog = ref([])
 const HuaTuoML_Result = ref()
 const HuaTuoMLLog_Status = ref()
 const fetchHuaTuoMLLog = ()=>{
-    requests.get('/api/lark_calendar_parse/status',{params: {'uuid': props.data}}).then(resp=>{
+    requests.get('/lark_calendar_parse/status',{params: {'uuid': props.data}}).then(resp=>{
         HuaTuoMLLog_Status.value = resp.data.status
         HuaTuoMLLog.value = resp.data.messages
         if(resp.data.status == 'waiting'){
@@ -17,7 +17,7 @@ const fetchHuaTuoMLLog = ()=>{
             }, 1000);
         }
         if(resp.data.status == 'success'){
-            requests.get('/api/lark_calendar_parse/output',{params: {'uuid': props.data}}).then(resp=>{
+            requests.get('/lark_calendar_parse/output',{params: {'uuid': props.data}}).then(resp=>{
                 HuaTuoML_Result.value = resp.data.data
             })
         }

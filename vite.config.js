@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+import electron from "vite-plugin-electron/simple"
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -6,7 +7,15 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig(()=>{
   return {
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      electron({
+        main: {
+          entry: "./electron/background.js",
+        },
+      }),
+    ],
+    base: "./",
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -16,11 +25,11 @@ export default defineConfig(()=>{
       host: "0.0.0.0",
       port: 1211,
       https: false,
-      open: true,
+      // open: true,
       ws: true,
+      hmr: true,
 
-      proxy: { // develop environment only
-               // suggest to proxy by web server application in production environment
+      proxy: {
         "/api": {
           target: "http://localhost:3007",
           changeOrigin: true,

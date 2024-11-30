@@ -14,7 +14,7 @@ const qr_timeout_time = ref()
 const button_click = () => {
     // button_loading.value = true;
     qr_current.value = 2;
-    requests.get('api/bili_qrcode').then((resp) => {
+    requests.get('/bili_qrcode').then((resp) => {
         // QRCode.toCanvas(document.getElementById('qr_area'), qr_url.value, err => {if(err) console.error(err)});
         QRCode.toDataURL(resp.data.data.url).then(url => qr_src.value = url);
         qr_gen_time.value = formatDate_ZeroFill(resp.data.data.time * 1000);

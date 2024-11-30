@@ -6,7 +6,7 @@
                 <a-card class="bili_dynamic_item" hoverable @click="showDrawer(i.bili_uid)">
                     <a-space size="large">
                         <a-avatar :size="54">
-                            <img :src="i.avatar" height="inherit" referrerPolicy="no-referrer"/>
+                            <img :src="i.avatar" height="inherit" referrerPolicy="no-referrer" crossorigin="anonymous"/>
                         </a-avatar>
                         {{ i.name }}
                     </a-space>
@@ -20,6 +20,7 @@
         @cancel="bili_dynamic_viewer_visible=false"
         class="bili_dynamics_drawer"
         :width="drawer_width"
+        popup-container="#content"
     >
         <template #title>
             动态查看{{ drawer_uid }}
@@ -57,7 +58,7 @@ var offset = ""
 var has_more = false
 
 function getList(){
-    requests.get('/api/bili_dynamic',{baseURL: baseURL}).then(res=>{
+    requests.get('/bili_dynamic',{baseURL: baseURL}).then(res=>{
         d_data.value=res.data
     }).catch(err=>{
         d_data.value=''
@@ -68,7 +69,7 @@ function getUserInfo(uid){
         'uid': uid,
         "offset": offset
     }
-    requests.get('/api/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
+    requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
         drawer_info.value = res.data.items
         offset = res.data.offset  
         has_more = res.data.has_more
@@ -90,7 +91,7 @@ const dynamicScrollMonitor = ()=>{
             'uid': drawer_uid.value,
             "offset": offset
         }
-        requests.get('/api/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
+        requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
             res.data.items.forEach(d => {
                 drawer_info.value.push(d)
             });
@@ -125,5 +126,8 @@ onMounted(()=>{
     .bili_dynamic_item{
         cursor: pointer;
         width: 100%;
+    }
+    .bili_dynamics_drawer{
+        height: 100%;
     }
 </style>

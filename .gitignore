@@ -28,3 +28,9 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+dist-electron/
+electron_packed/
+api/
+electron/app.exe
+electron/dynamic_config.json

@@ -1,7 +1,8 @@
 <template>
     <a-layout>
         <a-layout-header>
-            <Nav v-if="!route.meta.fs"/>
+            <!-- <Nav v-if="!route.meta.fs"/> -->
+            <Nav/>
         </a-layout-header>
         <a-layout id="content">
             <a-layout-sider v-if="!route.meta.fs&&!user.id==''">
@@ -35,6 +36,7 @@ const user = useUserLegacyStore()
 
 <style>
 #content, #content_c{
+    position: relative;
     overflow-x: hidden;
     scrollbar-width: thin;
 }

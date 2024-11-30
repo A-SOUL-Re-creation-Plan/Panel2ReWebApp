@@ -12,7 +12,7 @@ export const useUserStore = defineStore("user", () => {
 
   function reset(){ 
     id.value = '';
-    avatar.value = "/avatar/default.jpg";
+    avatar.value = "./avatar/default.jpg";
     name.value = "Panel2Re";
     token.value = "";
     refresh_token.value = "";

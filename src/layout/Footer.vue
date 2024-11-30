@@ -14,7 +14,7 @@ const ver_ = proxy.$p2rv_version
 const fe_ver = ref(ver_);
 const be_ver = ref('Connecting');
 onMounted(()=>{
-    requests.get('/api/version',{
+    requests.get('/version',{
         baseURL: baseURL
     }).then(resp=>{
         console.log(resp.data)

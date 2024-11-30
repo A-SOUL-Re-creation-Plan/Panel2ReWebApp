@@ -6,7 +6,6 @@
                     <a-form
                         class="login-form"
                         layout="vertical"
-                        :style="{width: '30vw'}"
                         :model="login_form"
                         @submit="submit"
                     >
@@ -14,7 +13,8 @@
                             field="id"
                             :rules="[{ required: true, message: '需要用户名。' }]"
                             :validate-trigger="['change', 'blur']"
-                            label="用户名"                            
+                            label="用户名"
+                            disabled
                         >
                             <a-input v-model="login_form.id">
                                 <template #prefix>
@@ -46,6 +46,7 @@
                                 <!-- <a-button disabled>使用 飞书SSO 登录</a-button> -->
                                 <!-- 缅怀飞书企业版/商业版的不限文件策略 -->
                                 <!-- 地主家没余粮了就很难评 -->
+                                <a-button @click="router.push('/user/register')">没有账号？前往注册</a-button>
                             </a-space>
                         </a-form-item>
                     </a-form>
@@ -65,20 +66,21 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 const router = useRouter()
 const data = useUserLegacyStore()
-const { id, name, avatar, token, expire_at } = storeToRefs(data)
+const { id, name, avatar, token, expire_at, is_logged } = storeToRefs(data)
 const login_form = reactive({
-    id: '',
+    id: 'admin',
     pwd: '',
     diana_subscribed: false,
 });
 const submit = (content)=>{
-    requests.post('/api/user/login_legacy',{data: content.values}).then((resp)=>{
+    requests.post('/user/login_legacy',{data: content.values}).then((resp)=>{
         if(resp.data.code==0){
             id.value = resp.data.data.user_info.id
             name.value = resp.data.data.user_info.username
             avatar.value = resp.data.data.user_info.avatar
             token.value = resp.data.data.token
             expire_at.value = resp.data.data.expire_at
+            is_logged.value = true
             router.push('/')
         }
     }).catch(err=>{
@@ -94,6 +96,14 @@ const submit = (content)=>{
         align-items: center;
         width: 100%;
         background: whitesmoke;
+    }
+    .login-form{
+        width: 35vw;
+    }
+    @media screen and (max-width: 864px) {
+        .login-form{
+            width: 70vw;
+        }
     }
 </style>
     

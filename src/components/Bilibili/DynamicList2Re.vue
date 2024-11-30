@@ -12,7 +12,7 @@ function refresh2ReDynamics(){
     var params = {
         'uid': 547510303,
     }
-    requests.get('/api/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
+    requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
         Re_info.value = res.data.items
         Re_Loading.value=false;
 

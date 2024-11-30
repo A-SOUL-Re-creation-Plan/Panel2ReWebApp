@@ -21,7 +21,7 @@ const IntroModalContentCopy = () => {
     IntroModalHide()
 }
 async function getLarkCalendar (){
-    get('/api/lark_calendar_list').then(resp=>{
+    get('/lark_calendar_list').then(resp=>{
         console.log("Calendar Init")
         for(let i=0;i<resp.data.data.length;i++){
             lark_cal.value.push(resp.data.data[i])

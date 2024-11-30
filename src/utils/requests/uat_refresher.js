@@ -22,7 +22,7 @@ function onUserAccessTokenExpired(){
 const fetchUserAccessToken = ()=>{
   return new Promise((res, rej) => {
     requests
-      .get("/api/lark_refresh_uat", { headers: headers })
+      .get("/lark_refresh_uat", { headers: headers })
       .then((resp) => {
         if (resp.data.code == 0) {
           user.token.value = resp.data.data.access_token;

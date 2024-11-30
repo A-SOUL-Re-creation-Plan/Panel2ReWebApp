@@ -11,7 +11,7 @@ const router = useRouter()
 const code = route.query.code
 const info = ref("")
 const GetUserInfo = () => {
-    requests.get('/api/lark_identity',{params:{'code':code}}).then((resp)=>{
+    requests.get('/lark_identity',{params:{'code':code}}).then((resp)=>{
         if(resp.data.code==0){
             user.id.value = resp.data.data.open_id
             user.avatar.value = resp.data.data.avatar

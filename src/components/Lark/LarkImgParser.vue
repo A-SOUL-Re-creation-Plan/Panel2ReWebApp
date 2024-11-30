@@ -9,7 +9,7 @@ const user = useUserStore()
 const headers = {
     "Panel2Re-Authorization": user.token
 }
-const uploadTarget = '/api/lark_calendar_parse/img'
+const uploadTarget = '/lark_calendar_parse/img'
 const beforeUpload = async function(){
     await checkUserAccessToken()
     return true
@@ -28,7 +28,7 @@ const inputImgLinkCancel = ()=>{
 const inputImgLink = ref({})
 const inputImgLinkOKLoading = ref(false)
 const inputImgLinkOK = ()=>{
-    post('/api/lark_calendar_parse/link',inputImgLink.value).then(resp=>{
+    post('/lark_calendar_parse/link',inputImgLink.value).then(resp=>{
         if(resp.data.code==200){
             HuaTuoML.value = resp.data.data.uuid;
             inputImgLinkCancel();

@@ -4,6 +4,7 @@ import { useUserLegacyStore } from "@/stores/user_legacy";
 import { storeToRefs } from "pinia";
 import { Modal } from "@arco-design/web-vue";
 import { useRouter } from "vue-router";
+import isElectron from "is-electron";
 
 const router = useRouter()
 
@@ -14,8 +15,12 @@ const networkErrNotification = (code) => {
         duration: 5000
     })
 }
-// import.meta.env.VITE_API_MOCKING && import("@/utils/requests/mock");
-const instance = axios.create()
+
+const baseURL = (isElectron && import.meta.env.PROD) ? "//api" : "/api"
+
+const instance = axios.create({
+  baseURL: baseURL
+})
 
 instance.interceptors.request.use(function (config) {
     const user = useUserLegacyStore();

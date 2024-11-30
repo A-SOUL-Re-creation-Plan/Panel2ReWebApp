@@ -75,7 +75,7 @@ const { pubed, not_pubed, is_pubing } = storeToRefs(archiveStatusStore())
 const total = ref(0)
 const listLoading = ref(true)
 const getArchiveList = ()=>{
-    requests.get('/api/bili_archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
+    requests.get('/bili_archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
         data.value = resp.data.items;
         total.value = resp.data.page.count;
         pubed.value = resp.data.status.pubed;
@@ -104,7 +104,7 @@ const BvidClick = (bvid)=>{
 }
 const problemClick = (info)=>{
     if (info.state_panel == 4) {
-        requests.get('/api/bili_xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
+        requests.get('/bili_xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
             Modal.info({
                 title: '稿件诊断',
                 content: resp.data.msg,
