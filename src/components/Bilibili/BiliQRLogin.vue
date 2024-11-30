@@ -23,7 +23,7 @@ const button_click = () => {
     }).catch(err => console.log(err));
 }
 const qr_check = (key) => {
-    requests('api/bili_qrpool', {params: {'key': key}}).then(resp => {
+    requests('/bili_qrpool', {params: {'key': key}}).then(resp => {
         let data = resp.data.raw_data.data;
         qr_message.value = data.message;
         if (data.code == 0){
