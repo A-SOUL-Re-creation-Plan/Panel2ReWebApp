@@ -40,7 +40,7 @@
                         </a-form-item>
                         <a-form-item field="diana_subscribed">
                             <a-checkbox v-model="reg_form.diana_subscribed">
-                                我已同意 <a href="https://live.bilibili.com/22637261">用户协议</a>。
+                                我已同意 <a href="https://live.bilibili.com/22637261" target="_blank">用户协议</a>。
                             </a-checkbox>
                         </a-form-item>
                         <a-form-item>
