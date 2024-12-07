@@ -40,7 +40,7 @@ protocol.registerSchemesAsPrivileged([
   {
     scheme: "resonance",
     privileges: {
-      secure: false,
+      secure: true,
       standard: true,
       supportFetchAPI: true, // Add this if you want to use fetch with this protocol.
       stream: true,
@@ -127,7 +127,7 @@ app.whenReady().then(async() => {
         // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
         if (process.env.VITE_DEV_SERVER_URL) {
           win.loadURL(process.env.VITE_DEV_SERVER_URL);
-          win.webContents.openDevTools();
+          win.webContents.openDevTools({ mode: "detach" });
         } else {
           win.loadURL("resonance://ui/");
         }
