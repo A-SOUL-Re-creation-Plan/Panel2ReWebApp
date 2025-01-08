@@ -9,6 +9,8 @@
                 <div id="sider">
                     <Sider/>
                     <div id="about">
+                        <a href="#" v-if="isElectron()" @click="reloadCookie()">切换Cookie</a>
+                        <div style="height: 10px;"></div>
                         <RouterLink to="/about">关于</RouterLink>
                     </div>
                 </div>
@@ -30,6 +32,8 @@ import Container from '@/layout/Container.vue'
 import Footer from "@/layout/Footer.vue"
 import Sider from '@/layout/Sider.vue'
 import { useUserLegacyStore } from "@/stores/user_legacy";
+import isElectron from "is-electron";
+import { reloadCookie } from '@/utils/electron.js'
 const route = useRoute()
 const user = useUserLegacyStore()
 </script>
@@ -45,15 +49,16 @@ const user = useUserLegacyStore()
     justify-items: center;
     flex-direction: column;
     min-height: 100%;
+    justify-content: space-between;
 }
 #about{
     width: 100%;
     display: flex;
-    position: absolute;
     bottom: 10px;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
-#about > a{
+#about > *{
     color: gray;
     text-decoration: none;
 }

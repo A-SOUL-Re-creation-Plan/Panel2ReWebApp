@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld("electron", {
   max: () => ipcRenderer.send("window-maximize"),
   mini: () => ipcRenderer.send("window-minimize"),
   close: () => ipcRenderer.send("window-close"),
+  reloadCookie: () => ipcRenderer.send("cookie-reload-request"),
   maxMonitor: (callback) => ipcRenderer.on("main-window-max", callback),
   unmaxMonitor: (callback) => ipcRenderer.on("main-window-unmax", callback),
 });

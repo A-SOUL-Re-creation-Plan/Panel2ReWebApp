@@ -40,4 +40,18 @@ const closeWindow = () => {
       console.log("Running in browser, not supported!");
     }
 }
-export { closeWindow, miniWindow, maxWindow, unmaxWindow, winStatusCheck };
+const reloadCookie = () => {
+  if (isElectron) {
+    window.electron.reloadCookie();
+  }else{
+    console.log("Running in browser, not supported!");
+  }
+}
+export {
+  closeWindow,
+  miniWindow,
+  maxWindow,
+  unmaxWindow,
+  winStatusCheck,
+  reloadCookie,
+};

@@ -1,6 +1,6 @@
 <template>
     <div id="copyright">
-        <span>Panel2Re F:{{ fe_ver }} B:{{ be_ver }} Copyright A-SOUL Recreation Plan 2024</span>
+        <span>Panel2Re F:{{ fe_ver }} B:{{ be_ver }} Copyright A-SOUL Recreation Plan 2025</span>
     </div>
 </template>
     

@@ -42,7 +42,7 @@ protocol.registerSchemesAsPrivileged([
     privileges: {
       secure: true,
       standard: true,
-      supportFetchAPI: true, // Add this if you want to use fetch with this protocol.
+      supportFetchAPI: true,
       stream: true,
     },
   },
@@ -150,6 +150,26 @@ app.whenReady().then(async() => {
         });
         win.on("unmaximize", function () {
           win.webContents.send("main-window-unmax");
+        });
+        ipcMain.on("cookie-reload-request", function async(){
+          addCookie().then((_) => {
+            fs.cp(
+              _.filePaths[0],
+              path.join(app.getPath("userData"),'biliup.json'),
+              (error)=>{
+                if(error){
+                  dialog.showErrorBox("ERROR","复制出错")
+                }else{
+                  dialog.showMessageBox({message: "复制成功，程序将重启"})
+                  app.relaunch();
+                  app.quit();
+                }
+              }
+            )
+          })
+          .catch((_) => {
+            app.quit();
+          });
         });
 
         win.webContents.setWindowOpenHandler(({ url }) => {
