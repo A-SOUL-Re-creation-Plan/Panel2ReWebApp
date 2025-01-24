@@ -75,12 +75,12 @@ const { pubed, not_pubed, is_pubing } = storeToRefs(archiveStatusStore())
 const total = ref(0)
 const listLoading = ref(true)
 const getArchiveList = ()=>{
-    requests.get('/bili_archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
-        data.value = resp.data.items;
-        total.value = resp.data.page.count;
-        pubed.value = resp.data.status.pubed;
-        not_pubed.value = resp.data.status.not_pubed;
-        is_pubing.value = resp.data.status.is_pubing;
+    requests.get('/bili/member/archives',{params: {'pn':pn.value,'ps': ps.value, 'status': status.value}}).then(resp=>{
+        data.value = resp.data.data.archives;
+        total.value = resp.data.data.page.count;
+        pubed.value = resp.data.data.status.pubed;
+        not_pubed.value = resp.data.data.status.not_pubed;
+        is_pubing.value = resp.data.data.status.is_pubing;
         listLoading.value = false
     }).catch(err=>{
         console.log(err);
@@ -104,10 +104,13 @@ const BvidClick = (bvid)=>{
 }
 const problemClick = (info)=>{
     if (info.state_panel == 4) {
-        requests.get('/bili_xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
+        requests.get('/bili/member/archives/xcode_msg', {params: {'bvid': info.bvid}}).then(resp=>{
             Modal.info({
                 title: '稿件诊断',
-                content: resp.data.msg,
+                content: resp.data.data.msg,
+                modalStyle: {
+                    whiteSpace: "pre-wrap"
+                },
                 hideCancel: true,
             })
         }).catch(e=>{

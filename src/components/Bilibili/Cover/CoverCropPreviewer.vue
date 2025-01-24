@@ -68,7 +68,7 @@ const cropper_export = ()=>{
                 </template>
                 加载图片
             </a-button>
-            <input type="file" id="cropper_upbtn" style="display: none;" @change="handleCoverFile" />
+            <input type="file" id="cropper_upbtn" style="display: none;" @change="handleCoverFile" accept="image/jpeg,image/png" />
             <a-button @click="cropper_modfN(16,9)">16:9</a-button>
             <a-button @click="cropper_modfN(16,10)">16:10</a-button>
             <a-button @click="cropper_export">保存截取后图片</a-button>

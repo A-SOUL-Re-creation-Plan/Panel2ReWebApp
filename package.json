@@ -1,7 +1,8 @@
 {
   "name": "panel2re",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
   "author": "Panel2Re Development Team",
   "homepage": "https://github.com/A-SOUL-Re-creation-Plan",
   "main": "electron/background.js",
@@ -10,10 +11,7 @@
     "build": "vite build -m production",
     "preview": "vite preview -m production",
     "dev_winuc": "chcp 65001 && vite --host -m development",
-    "electron:build": "vite build -m production && electron-builder",
-    "clear_pack": "rmdir /S /Q api && del /Q electron\\app.exe && del /Q electron\\dynamic_config.json",
-    "python_pack": "git clone https://github.com/A-SOUL-Re-creation-Plan/Panel2ReWebApi api/ && cd api && pip install -r requirements.txt && pyinstaller -F app.py --runtime-hook electron_hook.py && move dist\\app.exe ..\\electron\\app.exe && copy dynamic_config.json ..\\electron\\dynamic_config.json",
-    "electron:full_build": "yarn python_pack && vite build -m production && electron-builder && yarn clear_pack"
+    "electron:build": "vite build -m production && electron-builder"
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.55.2",
@@ -24,10 +22,15 @@
     "@fullcalendar/timegrid": "^6.1.14",
     "@fullcalendar/vue3": "^6.1.14",
     "arco-design-pro-vue": "^2.7.3",
-    "axios": "^1.7.2",
+    "axios": "^0.26.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
     "iconv-lite": "^0.6.3",
     "is-electron": "^2.2.2",
     "md5": "^2.3.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "qrcode": "^1.5.3",

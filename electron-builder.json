@@ -1,14 +1,13 @@
 {
   "productName": "Panel2Re",
   "appId": "org.cn.asoulrecreationplan.panel2re",
-  "copyright": "Copyright © 2024 A-SOUL Re-Creation Plan",
+  "copyright": "Copyright © 2025 A-SOUL Re-Creation Plan",
   "asar": true,
   "icon": "public/favicon.ico",
   "directories": {
     "output": "electron_packed/${version}"
   },
   "files": ["dist", "electron", "public"],
-  "asarUnpack": ["electron/app.exe"],
   "nsis": {
     "oneClick": false,
     "allowToChangeInstallationDirectory": true,
