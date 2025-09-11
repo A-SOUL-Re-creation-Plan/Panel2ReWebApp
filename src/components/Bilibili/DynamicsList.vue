@@ -3,10 +3,10 @@
         <a-row :gutter="15">
             <a-empty v-if="d_data==''"/>
             <a-col class="bili_dynamic" v-for="i in d_data" :xl="12" :sm="24" :key="i.id" v-else>
-                <a-card class="bili_dynamic_item" hoverable @click="showDrawer(i.bili_uid)">
+                <a-card class="bili_dynamic_item" hoverable @click="showDrawer(i.mid)">
                     <a-space size="large">
                         <a-avatar :size="54">
-                            <img :src="i.avatar" height="inherit" referrerPolicy="no-referrer" crossorigin="anonymous"/>
+                            <img :src="i.face" height="inherit" referrerPolicy="no-referrer" crossorigin="anonymous"/>
                         </a-avatar>
                         {{ i.name }}
                     </a-space>
@@ -58,10 +58,10 @@ var offset = ""
 var has_more = false
 
 function getList(){
-    requests.get('/bili_dynamic',{baseURL: baseURL}).then(res=>{
-        d_data.value=res.data
+    requests.get('/bili/dynamic').then(res=>{
+        d_data.value=res.data.data
     }).catch(err=>{
-        d_data.value=''
+        d_data.value=[]
     })
 }
 function getUserInfo(uid){
@@ -69,10 +69,10 @@ function getUserInfo(uid){
         'uid': uid,
         "offset": offset
     }
-    requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
-        drawer_info.value = res.data.items
-        offset = res.data.offset  
-        has_more = res.data.has_more
+    requests.get('/bili/dynamics',{params: params}).then(res=>{
+        drawer_info.value = res.data.data.items
+        offset = res.data.data.offset  
+        has_more = res.data.data.has_more
     }).catch(err=>{
         drawer_info.value = err
     })
@@ -91,12 +91,12 @@ const dynamicScrollMonitor = ()=>{
             'uid': drawer_uid.value,
             "offset": offset
         }
-        requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
-            res.data.items.forEach(d => {
+        requests.get('/bili/dynamics',{baseURL: baseURL,params: params}).then(res=>{
+            res.data.data.items.forEach(d => {
                 drawer_info.value.push(d)
             });
-            offset = res.data.offset
-            has_more = res.data.has_more
+            offset = res.data.data.offset
+            has_more = res.data.data.has_more
         })
     }else{
         console.log("No more dynamic")
