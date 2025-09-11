@@ -5,6 +5,10 @@
   "author": "Panel2Re Development Team",
   "homepage": "https://github.com/A-SOUL-Re-creation-Plan",
   "main": "electron/background.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/A-SOUL-Re-creation-Plan/Panel2ReWebApp.git"
+  },
   "scripts": {
     "dev": "vite --host -m development",
     "build": "vite build -m production",
