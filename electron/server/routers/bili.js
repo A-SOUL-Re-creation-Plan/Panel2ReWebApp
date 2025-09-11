@@ -175,4 +175,60 @@ router.get("/qrcode/pool", async (req, res) => {
   }
 });
 
+router.get("/pm", async (req, res) => {
+  try {
+    let session_list = (
+      await requests.get("/session_svr/v1/session_svr/get_sessions", {
+        baseURL: "https://api.vc.bilibili.com",
+        params: {
+          begin_ts: "",
+          size: 30,
+          mobi_app: "web",
+          session_type: 1,
+          group_fold: 1,
+          unfollow_fold: 0,
+          sort_rule: 2,
+        },
+      })
+    ).data.data.session_list;
+    let talkers_ids = session_list.map((_) => _.talker_id);
+    let talkers_info = (
+      await requests.get("/account/v1/user/cards", {
+        baseURL: "https://api.vc.bilibili.com",
+        params: {
+          uids: talkers_ids.join(","),
+        },
+      })
+    ).data.data;
+    for (const i in session_list) {
+      let id = session_list[i].talker_id;
+      if (id === 844424930131966) {
+        session_list[i].account_info = {
+          mid: 844424930131966,
+          face: "https://message.biliimg.com/bfs/im/489a63efadfb202366c2f88853d2217b5ddc7a13.png",
+          name: "UP主小助手",
+        };
+      } else {
+        if (session_list[i].account_info) {
+          let acc_info = session_list[i].account_info;
+          delete session_list[i].account_info;
+          session_list[i].account_info = {
+            mid: -1,
+            face: acc_info.pic_url,
+            name: acc_info.name,
+          };
+        } else {
+          let target = talkers_info.find(
+            (_) => _.mid === session_list[i].talker_id
+          );
+          session_list[i].account_info = target;
+        }
+      }
+    }
+    res.send(ResultResp.OK(session_list));
+  } catch (error) {
+    res.status(500).send(ResultResp.FAILED(error.message));
+  }
+});
+
 export default router;
