@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <a-space direction="vertical" size="large">
+        <a-space direction="vertical" size="large" class="card_content">
             <div class="card_title_all" v-if="title">
                 <div class="card_logo">
                     <Logo height="50px"/>
@@ -39,6 +39,7 @@ const subtitle = props.subtitle;
         padding: 35px 35px;
         margin: auto auto;
         flex-direction: column;
+        min-width: 70%;
     }
     .card_title_all{
         display: flex;
@@ -57,6 +58,9 @@ const subtitle = props.subtitle;
     }
     .card_titles *{
         text-align: right;
+    }
+    .card_content{
+        min-width: 100%;
     }
 </style>
     

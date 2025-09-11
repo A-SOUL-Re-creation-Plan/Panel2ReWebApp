@@ -14,24 +14,27 @@ const qr_timeout_time = ref()
 const button_click = () => {
     // button_loading.value = true;
     qr_current.value = 2;
-    requests.get('/bili_qrcode').then((resp) => {
+    requests.get('/bili/qrcode/fetch').then((resp) => {
         // QRCode.toCanvas(document.getElementById('qr_area'), qr_url.value, err => {if(err) console.error(err)});
         QRCode.toDataURL(resp.data.data.url).then(url => qr_src.value = url);
-        qr_gen_time.value = formatDate_ZeroFill(resp.data.data.time * 1000);
-        qr_timeout_time.value = formatDate_ZeroFill((resp.data.data.time + 180) * 1000);
+        qr_gen_time.value = formatDate_ZeroFill(resp.data.data.time);
+        qr_timeout_time.value = formatDate_ZeroFill(resp.data.data.time + (180 * 1000));
         qr_check(resp.data.data.qrcode_key);
     }).catch(err => console.log(err));
 }
 const qr_check = (key) => {
-    requests('/bili_qrpool', {params: {'key': key}}).then(resp => {
-        let data = resp.data.raw_data.data;
+    requests('/bili/qrcode/pool', {params: {'key': key}}).then(resp => {
+        let data = resp.data.data;
         qr_message.value = data.message;
         if (data.code == 0){
             qr_current.value = 3;
             Modal.success({
                 title: "Cookie 信息",
-                content: resp.data.cookies,
-                modalStyle:{'overflow-wrap': 'break-word'}
+                content: resp.data.data.cookies,
+                modalStyle:{'overflow-wrap': 'break-word'},
+                onClose: ()=>{
+                    navigator.clipboard.writeText(resp.data.data.cookies)
+                }
             })
             // button_loading.value = false;
             qr_src.value = undefined;

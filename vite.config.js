@@ -11,7 +11,10 @@ export default defineConfig(()=>{
       vue(),
       electron({
         main: {
-          entry: "./electron/background.js",
+          entry: "electron/background.js",
+        },
+        preload: {
+          input: "electron/preload.js",
         },
       }),
     ],

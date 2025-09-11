@@ -1,6 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserLegacyStore } from '@/stores/user_legacy';
-import { storeToRefs } from 'pinia';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -20,10 +18,10 @@ const router = createRouter({
           path: "register",
           component: () => import("@/views/user/Register.vue"),
         },
-        {
-          path: "lark_sso_callback",
-          component: () => import("@/views/user/LarkSSOReturn.vue"),
-        },
+        // {
+        //   path: "lark_sso_callback",
+        //   component: () => import("@/views/user/LarkSSOReturn.vue"),
+        // },
       ],
       meta: {
         fs: true,
@@ -64,24 +62,5 @@ const router = createRouter({
     },
   ],
 });
-
-
-
-router.beforeEach((to,from,next)=>{
-  if(to.path=='/user/login') return next();
-  if(to.path=='/user/register') return next();
-  // if(to.path=="/user/lark_sso_callback") return next();
-  const data = useUserLegacyStore();
-  const { token, expire_at } = storeToRefs(data);
-  if (token.value != "") {
-    if (expire_at.value >= Date.now()) {
-      return next();
-    }
-    return next("/user/login");
-  }
-  next("/user/login");
-})
-
-
 
 export default router

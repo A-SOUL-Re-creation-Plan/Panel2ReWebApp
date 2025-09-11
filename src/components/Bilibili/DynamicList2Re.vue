@@ -2,7 +2,6 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import DynamicDetail from './DynamicDetail.vue';
 import requests from '@/utils/requests';
-const baseURL = import.meta.env.VITE_APP_API_BASE;
 const Re_info = ref({})
 const Re_Loading = ref(true)
 
@@ -12,10 +11,9 @@ function refresh2ReDynamics(){
     var params = {
         'uid': 547510303,
     }
-    requests.get('/bili_dynamics',{baseURL: baseURL,params: params}).then(res=>{
-        Re_info.value = res.data.items
+    requests.get('/bili/dynamics',{params: params}).then(res=>{
+        Re_info.value = res.data.data.items
         Re_Loading.value=false;
-
     }).catch(err=>{ 
         Re_info.value = err
         Re_Loading.value=false;

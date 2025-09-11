@@ -8,19 +8,14 @@
     import isElectron from 'is-electron';
     import { winStatusCheck,closeWindow,miniWindow,maxWindow,unmaxWindow } from '@/utils/electron';
     const router = useRouter();
-    const user = useUserLegacyStore();
-    const isLogin = ref(storeToRefs(user).is_logged);
-    const avatarImage = ref(storeToRefs(user).avatar);
-    const userName = ref(storeToRefs(user).name);
+    const user = useUserLegacyStore()
+    const userRefs = storeToRefs(user)
+    const userId = ref(userRefs.id);
+    const avatarImage = ref(userRefs.avatar);
+    const userName = ref(userRefs.name);
     const logout = ()=>{
-        requests.delete('/user/logout_legacy').then(resp=>{
-            if(resp.data.code==0){
-                user.reset();
-                router.push('/user/login')
-            }
-        }).catch(err=>{
-            console.log(err)
-        })
+        user.reset();
+        router.push('/user/login')
     }
     const winStatus = ref(false);
     const toggleWindow = ()=>{
@@ -47,23 +42,20 @@
                 <div id="nav-r_info">
                     <a-avatar>
                         <!-- <img src="@/assets/default.jpg" alt="avatar"/> -->
-                        <img :src="avatarImage" alt="avatar"/>
+                        <img :src="avatarImage" alt="avatar" crossorigin="anonymous" referrerpolicy="no-referrer"/>
                     </a-avatar>
                     <span id="nav-r_uname" style="vertical-align:middle;">{{ userName }}</span>
                 </div>
                 
                 
-                <template #content v-if="!isLogin">
+                <template #content v-if="!userId==-1">
                     <a-doption>
                         <router-link class="router-link" to="/user/login">登录已有账户</router-link>
-                    </a-doption>
-                    <a-doption>
-                        <router-link class="router-link" to="/user/register">注册 Panel2Re 账户</router-link>
                     </a-doption>
                 </template>
                 <template #content v-else>
                     <a-doption>
-                        <span @click="logout">退出登录</span>
+                        <span @click="logout">切换用户</span>
                     </a-doption>
                 </template>
             </a-dropdown>
