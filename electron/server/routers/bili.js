@@ -231,4 +231,33 @@ router.get("/pm", async (req, res) => {
   }
 });
 
+router.get("/unread", async (req, res) => {
+  try {
+    let data = (
+      await requests.get("/session_svr/v1/session_svr/single_unread", {
+        baseURL: "https://api.vc.bilibili.com",
+        params: {
+          build: 0,
+          mobi_app: "web",
+          unread_type: 0,
+          show_unfollow_list: 1,
+        },
+      })
+    ).data.data;
+    let count_keys = Object.keys(data);
+    let total_count = 0;
+    for (let i of count_keys) {
+      total_count += data[i];
+    }
+    res.send(
+      ResultResp.OK({
+        total_count,
+        ...data,
+      })
+    );
+  } catch (e) {
+    res.status(500).send(ResultResp.FAILED(e.message));
+  }
+});
+
 export default router;
