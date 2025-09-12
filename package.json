@@ -15,7 +15,9 @@
     "build": "vite build -m production",
     "preview": "vite preview -m production",
     "dev_winuc": "chcp 65001 && vite --host -m development",
-    "electron:build": "vite build -m production && electron-builder"
+    "electron:build": "vite build -m production && electron-builder",
+    "electron:build_linux": "vite build -m production && electron-builder --linux",
+    "electron:build_macos": "vite build -m production && electron-builder --mac"
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.55.2",

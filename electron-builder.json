@@ -27,5 +27,29 @@
       }
     ],
     "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+  },
+  "mac": {
+    "icon": "public/favicon.ico",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64", "universal"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "arm64", "universal"]
+      }
+    ],
+    "artifactName": "${productName}-AppleMacOSX-${version}-Package.${ext}"
+  },
+  "linux": {
+    "icon": "public/favicon.ico",
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      }
+    ],
+    "artifactName": "${productName}-LinuxDesktop-${version}-AppImage.${ext}"
   }
 }
