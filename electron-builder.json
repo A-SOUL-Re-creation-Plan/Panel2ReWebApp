@@ -29,12 +29,8 @@
     "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
   },
   "mac": {
-    "icon": "public/favicon.ico",
+    "icon": "public/favicon.png",
     "target": [
-      {
-        "target": "dmg",
-        "arch": ["x64", "arm64", "universal"]
-      },
       {
         "target": "zip",
         "arch": ["x64", "arm64", "universal"]
@@ -43,7 +39,7 @@
     "artifactName": "${productName}-AppleMacOSX-${version}-Package.${ext}"
   },
   "linux": {
-    "icon": "public/favicon.ico",
+    "icon": "public/favicon.png",
     "target": [
       {
         "target": "AppImage",

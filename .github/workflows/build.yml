@@ -24,20 +24,23 @@ jobs:
           npm install pnpm -g
           pnpm i
           pnpm electron:build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: artifact-${{ matrix.platform }}${{ matrix.arch && format('-{0}', matrix.arch) }}
+          name: artifact-${{ matrix.os }}
           path: |
-            electron_packed/**/*.exe
-            electron_packed/**/*.zip
-            electron_packed/**/*.dmg
+            electron_packed/**/Panel2Re-*-Setup.exe
+            electron_packed/**/Panel2Re-*-Package.zip
+            electron_packed/**/Panel2Re-*-AppImage.AppImage
             electron_packed/**/latest.yml
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,4 +57,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./dist/*
+          files: ./dist/*/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
