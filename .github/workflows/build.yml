@@ -34,10 +34,11 @@ jobs:
         with:
           name: artifact-${{ matrix.os }}
           path: |
-            electron_packed/**/Panel2Re-*-Setup.exe
-            electron_packed/**/Panel2Re-*-Package.zip
-            electron_packed/**/Panel2Re-*-AppImage.AppImage
-            electron_packed/**/latest.yml
+            electron_packed/**/Panel2Re-*.exe
+            electron_packed/**/Panel2Re-*.zip
+            electron_packed/**/Panel2Re-*.dmg
+            electron_packed/**/Panel2Re-*.AppImage
+            electron_packed/**/latest*.yml
 
   release:
     needs: build
@@ -57,10 +58,12 @@ jobs:
           pattern: artifact-*
           merge-multiple: true
 
+      - name: Display structure of downloaded files
+        run: ls -R ./dist/
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./dist/*/
+          files: ./dist/*/*
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

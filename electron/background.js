@@ -1,8 +1,17 @@
-import { app, BrowserWindow, ipcMain, protocol, net, dialog, webContents } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  protocol,
+  net,
+  dialog,
+  webContents,
+} from "electron";
 import path from "path";
 import { dirname } from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import updater from "electron-updater";
 import { serviceInit, servicePort } from "./server/index.js";
 import { refreshCookie } from "./server/utils/requests.js";
 
@@ -10,6 +19,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const appData = app.getPath("userData");
+const { autoUpdater } = updater;
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -24,10 +34,9 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
-app.setAppLogsPath([app.getPath('userData')]);
+app.setAppLogsPath([app.getPath("userData")]);
 
-app.whenReady().then(async() => {
-
+app.whenReady().then(async () => {
   const token = Math.random().toString(36).slice(-18).toUpperCase();
 
   protocol.handle("resonance", (request) => {
@@ -57,7 +66,7 @@ app.whenReady().then(async() => {
         target += search;
       }
       var newHeaders = new Headers(request.headers);
-      newHeaders.append('token',token)
+      newHeaders.append("token", token);
       return net.fetch(target, {
         method: request.method,
         headers: newHeaders,
@@ -72,7 +81,7 @@ app.whenReady().then(async() => {
       });
     }
   });
-  refreshCookie().then(()=>{
+  refreshCookie().then(() => {
     serviceInit(token);
   });
   const win = new BrowserWindow({
@@ -92,8 +101,9 @@ app.whenReady().then(async() => {
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL);
     win.webContents.openDevTools({ mode: "detach" });
-  }else{
+  } else {
     win.loadURL("resonance://ui/");
+    autoUpdater.checkForUpdatesAndNotify();
   }
   win.show();
 
@@ -115,27 +125,24 @@ app.whenReady().then(async() => {
   win.on("unmaximize", function () {
     win.webContents.send("main-window-unmax");
   });
-  ipcMain.on("cookie-reload-request", function async(){
-    addCookie().then((_) => {
-      fs.cp(
-        _.filePaths[0],
-        path.join(appData,'biliup.json'),
-        (error)=>{
-          if(error){
-            dialog.showErrorBox("ERROR","复制出错")
-          }else{
-            dialog.showMessageBox({message: "复制成功，程序将重启"})
+  ipcMain.on("cookie-reload-request", function async() {
+    addCookie()
+      .then((_) => {
+        fs.cp(_.filePaths[0], path.join(appData, "biliup.json"), (error) => {
+          if (error) {
+            dialog.showErrorBox("ERROR", "复制出错");
+          } else {
+            dialog.showMessageBox({ message: "复制成功，程序将重启" });
             app.relaunch();
             app.quit();
           }
-        }
-      )
-    })
-    .catch((_) => {
-      app.quit();
-    });
+        });
+      })
+      .catch((_) => {
+        app.quit();
+      });
   });
-  win.webContents.setWindowOpenHandler(( handler ) => {
+  win.webContents.setWindowOpenHandler((handler) => {
     return {
       action: "allow",
       overrideBrowserWindowOptions: {
@@ -148,10 +155,10 @@ app.whenReady().then(async() => {
     };
   });
   win.webContents.on("will-navigate", (details, url) => {
-    if(!url.includes("resonance://")){
-      details.preventDefault()
+    if (!url.includes("resonance://")) {
+      details.preventDefault();
     }
-  })
+  });
 });
 
-export { app }
+export { app };

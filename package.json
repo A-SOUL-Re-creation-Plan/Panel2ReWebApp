@@ -1,6 +1,6 @@
 {
   "name": "panel2re",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "author": "Panel2Re Development Team",
@@ -15,9 +15,7 @@
     "build": "vite build -m production",
     "preview": "vite preview -m production",
     "dev_winuc": "chcp 65001 && vite --host -m development",
-    "electron:build": "vite build -m production && electron-builder",
-    "electron:build_linux": "vite build -m production && electron-builder --linux",
-    "electron:build_macos": "vite build -m production && electron-builder --mac"
+    "electron:build": "vite build -m production && electron-builder --publish=never"
   },
   "dependencies": {
     "@arco-design/web-vue": "^2.55.2",
@@ -31,6 +29,7 @@
     "axios": "^0.26.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "electron-updater": "^6.6.2",
     "express": "^4.21.2",
     "iconv-lite": "^0.6.3",
     "is-electron": "^2.2.2",

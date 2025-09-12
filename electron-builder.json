@@ -18,6 +18,7 @@
     "shortcutName": "Panel2Re",
     "runAfterFinish": true
   },
+  "publish": [],
   "win": {
     "icon": "public/favicon.ico",
     "target": [
