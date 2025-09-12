@@ -1,11 +1,22 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import requests from "@/utils/requests/index.js";
 const unreadCount = ref(100);
 const isPMListShow = ref(false);
 const isLoading = ref(true);
 const setPMListShow = () => {
   isPMListShow.value = !isPMListShow.value;
 };
+const sessionList = ref([]);
+const fetchSessionList = async () => {
+  let data = (await requests.get("/bili/pm")).data.data;
+  sessionList.value = data;
+  isLoading.value = false;
+  console.log(data);
+};
+onMounted(() => {
+  fetchSessionList();
+});
 </script>
 
 <template>
@@ -39,7 +50,27 @@ const setPMListShow = () => {
       >
         <a-spin :size="32" />
       </div>
-      <a-list v-else />
+      <a-list>
+        <a-list-item v-for="item of sessionList" :key="item.talker_id">
+          <a-list-item-meta
+            :title="item.account_info.name"
+            :description="
+              JSON.parse(item.last_msg.content).title ??
+              JSON.parse(item.last_msg.content).content
+            "
+          >
+            <template #avatar>
+              <a-avatar shape="circle">
+                <img
+                  alt="avatar"
+                  :src="item.account_info.face"
+                  referrerpolicy="no-referrer"
+                />
+              </a-avatar>
+            </template>
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
     </a-drawer>
   </div>
 </template>
