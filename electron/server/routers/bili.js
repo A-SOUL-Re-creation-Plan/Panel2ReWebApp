@@ -11,11 +11,14 @@ router.get("/dynamic", async (req, res) => {
   const fetchInfo = async (config) => {
     var uid_list = [];
     for (const u of config) {
-      uid_list.push(u.bili_uid);
+      uid_list.push({
+        uid: u.bili_uid,
+        id: u.id,
+      });
     }
     var uid_string = uid_list
       .map((i) => {
-        return i;
+        return i.uid;
       })
       .join(",");
     try {
@@ -23,9 +26,16 @@ router.get("/dynamic", async (req, res) => {
         params: { uids: uid_string },
         baseURL: "https://api.vc.bilibili.com",
       });
-      return await request.data.data.sort((a, b) => {
-        return a.mid - b.mid;
-      });
+      return await request.data.data
+        .map((v) => {
+          return {
+            ...v,
+            id: uid_list.find((tmp) => tmp.uid == v.mid).id,
+          };
+        })
+        .sort((a, b) => {
+          return a.id - b.id;
+        });
     } catch (error) {
       return {};
     }
