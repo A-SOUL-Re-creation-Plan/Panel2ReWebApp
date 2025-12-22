@@ -4,8 +4,8 @@ import requests from "./requests.js";
 const biliHeaders = {
   "User-Agent":
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-  'Referer': "https://www.bilibili.com/",
-  'Pregma': "no-cache",
+  Referer: "https://www.bilibili.com/",
+  Pregma: "no-cache",
   "Cache-Control": "max-age=0",
   "Upgrade-Insecure-Requests": "1",
   "Sec-Ch-UA":
@@ -14,10 +14,15 @@ const biliHeaders = {
   "Sec-Fetch-Mode": "navigate",
   "Sec-Fetch-User": "?1",
   "Sec-Fetch-Dest": "document",
-  'Accept': "*/*",
+  Accept: "*/*",
   "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
   "Accept-Encoding": "",
-  'Connection': "keep-alive",
+  Connection: "keep-alive",
+};
+
+const biliHDAppKey = {
+  signKey: "4409e2ce8ffd12b8",
+  signSec: "59b43e04ad6965f34319062b478f83dd",
 };
 
 const mixinKeyEncTab = [
@@ -39,7 +44,7 @@ function encWbi(params, img_key, sub_key) {
     chr_filter = /[!'()*]/g;
 
   Object.assign(params, { wts: curr_time });
-  let paramsString = params
+  let paramsString = params;
   const query = Object.keys(paramsString)
     .sort()
     .map((key) => {
@@ -55,7 +60,7 @@ function encWbi(params, img_key, sub_key) {
 
 async function getWbiKeys() {
   const request = await requests.get("/x/web-interface/nav");
-  const res = await request.data
+  const res = await request.data;
   const {
     data: {
       wbi_img: { img_url, sub_url },
@@ -76,27 +81,38 @@ async function getWbiKeys() {
 
 async function SignParamsWbi(params) {
   const web_keys = await getWbiKeys();
-  const img_key = web_keys.img_key, sub_key = web_keys.sub_key;
+  const img_key = web_keys.img_key,
+    sub_key = web_keys.sub_key;
   const query = encWbi(params, img_key, sub_key);
-  return query
+  return query;
 }
 
-const copyright_dict = {1: "原创", 2: "转载"}
+function appSign(params, appkey, appsec) {
+  params.appkey = appkey;
+  const searchParams = new URLSearchParams(params);
+  searchParams.sort();
+  return {
+    ...params,
+    sign: md5(searchParams.toString() + appsec),
+  };
+}
+
+const copyright_dict = { 1: "原创", 2: "转载" };
 const state_dict = {
-  1: "橙色通过", 
-  0: "开放浏览", 
-  "-1": "待审核", 
-  "-2": "稿件被退回", 
-  "-3": "网警锁定", 
-  "-4": "被锁定（撞车）", 
-  "-9": "等待转码", 
-  "-10": "延迟审核", 
-  "-16": "转码失败", 
-  "-100": "用户删除", 
-  "-30": "修改已提交", 
-  "-6": "修改已提交"
-}
-const live_status_dict = {0: "未开播", 1: "直播中", 2: "轮播中"}
+  1: "橙色通过",
+  0: "开放浏览",
+  "-1": "待审核",
+  "-2": "稿件被退回",
+  "-3": "网警锁定",
+  "-4": "被锁定（撞车）",
+  "-9": "等待转码",
+  "-10": "延迟审核",
+  "-16": "转码失败",
+  "-100": "用户删除",
+  "-30": "修改已提交",
+  "-6": "修改已提交",
+};
+const live_status_dict = { 0: "未开播", 1: "直播中", 2: "轮播中" };
 
-export { biliHeaders, SignParamsWbi }
-export { copyright_dict, state_dict, live_status_dict }
+export { biliHeaders, SignParamsWbi, biliHDAppKey, appSign };
+export { copyright_dict, state_dict, live_status_dict };

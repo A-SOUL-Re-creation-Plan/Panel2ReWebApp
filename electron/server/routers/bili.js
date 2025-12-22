@@ -2,7 +2,12 @@ import { Router } from "express";
 import dynamic_config from "../dynamic_config.json" assert { type: "json" };
 import requests from "../utils/requests.js";
 import ResultResp from "../results/index.js";
-import { SignParamsWbi, copyright_dict } from "../utils/bilibili.js";
+import {
+  SignParamsWbi,
+  appSign,
+  biliHDAppKey,
+  copyright_dict,
+} from "../utils/bilibili.js";
 import axios from "axios";
 
 const router = Router();
@@ -145,15 +150,30 @@ router.get("/member/archives/xcode_msg", async (req, res) => {
 });
 
 router.get("/qrcode/fetch", async (req, res) => {
+  const form = new URLSearchParams(
+    appSign(
+      {
+        ts: (parseInt(new Date().getTime().toString()) / 1000).toFixed(0),
+        local_id: 0,
+      },
+      biliHDAppKey.signKey,
+      biliHDAppKey.signSec
+    )
+  );
   try {
-    axios
-      .get("/x/passport-login/web/qrcode/generate", {
+    requests
+      .post("/x/passport-tv-login/qrcode/auth_code", form, {
         baseURL: "https://passport.bilibili.com",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((_) => {
         let data = _.data;
-        data.data.time = Date.now();
-        res.send(ResultResp.OK(data.data));
+        if (data.code == 0) {
+          data.data.time = parseInt(new Date().getTime().toString());
+          res.send(ResultResp.OK(data.data));
+        } else {
+          res.status(500).send(JSON.stringify(data));
+        }
       });
   } catch (error) {
     res.status(500).send(ResultResp.FAILED(error.message));
@@ -162,21 +182,32 @@ router.get("/qrcode/fetch", async (req, res) => {
 
 router.get("/qrcode/pool", async (req, res) => {
   try {
-    let qrcode_key = req.query.key;
-    axios
-      .get("/x/passport-login/web/qrcode/poll", {
+    let auth_code = req.query.key;
+    const form = new URLSearchParams(
+      appSign(
+        {
+          ts: Date.now(),
+          local_id: 0,
+          auth_code,
+        },
+        biliHDAppKey.signKey,
+        biliHDAppKey.signSec
+      )
+    );
+    requests
+      .post("/x/passport-tv-login/qrcode/poll", form, {
         baseURL: "https://passport.bilibili.com",
-        params: { qrcode_key: qrcode_key },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((_) => {
-        let data = _.data.data;
+        let data = _.data;
         if (data.code == 0) {
-          let cookieString = "";
-          let cookies = _.headers["set-cookie"];
-          for (let cookie of cookies) {
-            cookieString += `${cookie.split("; ")[0]}; `;
-          }
-          data.cookies = cookieString;
+          console.log(JSON.stringify(data.data.cookie_info.cookies));
+          data.cookies = data.data.cookie_info.cookies
+            .map((v) => {
+              return `${v.name}=${v.value}; `;
+            })
+            .join("");
         }
         res.send(ResultResp.OK(data));
       });
