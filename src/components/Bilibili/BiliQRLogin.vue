@@ -27,28 +27,57 @@ const button_click = () => {
     })
     .catch((err) => {
       Message.error(err.response.data.message);
+      qr_current.value = 1;
     });
 };
 const qr_check = (key) => {
   requests("/bili/qrcode/pool", { params: { key: key } })
     .then((resp) => {
       let data = resp.data.data;
-      qr_message.value = data.message;
-      if (data.code == 0) {
+      qr_message.value = resp.data.message ?? "";
+      if (resp.data.code == 0) {
         qr_current.value = 3;
         Modal.success({
           title: "Cookie 信息",
           content: resp.data.data.cookies,
           modalStyle: { "overflow-wrap": "break-word" },
-          onClose: () => {
+          onOk: () => {
+            const blob = new Blob(
+              [
+                JSON.stringify(
+                  {
+                    cookie_info: resp.data.data.cookie_info,
+                    sso: resp.data.data.sso,
+                    token_info: resp.data.data.token_info,
+                    platform: "BiliTV",
+                  },
+                  null,
+                  2
+                ),
+              ],
+              {
+                type: "application/json",
+              }
+            );
+            const objectURL = URL.createObjectURL(blob);
+            const aTag = document.createElement("a");
+            aTag.href = objectURL;
+            aTag.download = "cookies.json";
+            aTag.click();
+            URL.revokeObjectURL(objectURL);
+          },
+          onCancel: () => {
             navigator.clipboard.writeText(resp.data.data.cookies);
           },
+          okText: "导出JSON",
+          cancelText: "复制Cookie串",
+          hideCancel: false,
         });
         // button_loading.value = false;
         qr_src.value = undefined;
         qr_message.value = undefined;
         return;
-      } else if (data.code == 86038) {
+      } else if (resp.data.code == 86038) {
         qr_status.value = "error";
         Modal.error({
           title: "二维码已失效",

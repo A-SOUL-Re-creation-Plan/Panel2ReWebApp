@@ -200,16 +200,15 @@ router.get("/qrcode/pool", async (req, res) => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((_) => {
-        let data = _.data;
-        if (data.code == 0) {
-          console.log(JSON.stringify(data.data.cookie_info.cookies));
-          data.cookies = data.data.cookie_info.cookies
+        let data = _.data.data;
+        if (_.data.code == 0) {
+          data.cookies = data.cookie_info.cookies
             .map((v) => {
               return `${v.name}=${v.value}; `;
             })
             .join("");
         }
-        res.send(ResultResp.OK(data));
+        res.send(data ? ResultResp.OK(data) : _.data);
       });
   } catch (error) {
     res.status(500).send(ResultResp.FAILED(error.message));
