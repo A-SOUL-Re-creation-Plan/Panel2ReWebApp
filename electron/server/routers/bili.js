@@ -120,6 +120,23 @@ router.get("/member/archives", async (req, res) => {
   }
 });
 
+router.get("/member/archives/view", async (req, res) => {
+  try {
+    requests
+      .get("/x/client/archive/view", {
+        params: {
+          aid: req.query.aid,
+        },
+        baseURL: "https://member.bilibili.com",
+      })
+      .then((_) => {
+        res.send(ResultResp.OK(_.data.data));
+      });
+  } catch (error) {
+    res.status(500).send(ResultResp.FAILED(error.message));
+  }
+});
+
 router.get("/member/archives/xcode_msg", async (req, res) => {
   try {
     requests
