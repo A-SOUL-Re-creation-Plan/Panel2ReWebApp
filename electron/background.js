@@ -81,9 +81,10 @@ app.whenReady().then(async () => {
       });
     }
   });
-  refreshCookie().then(() => {
+  refreshCookie().finally(() => {
     serviceInit(token);
   });
+
   const win = new BrowserWindow({
     title: "Panel2Re",
     width: 1280,
