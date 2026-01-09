@@ -122,16 +122,48 @@ router.get("/member/archives", async (req, res) => {
 
 router.get("/member/archives/view", async (req, res) => {
   try {
-    requests
-      .get("/x/client/archive/view", {
+    let views = (
+      await requests.get("/x/client/archive/view", {
         params: {
           aid: req.query.aid,
         },
         baseURL: "https://member.bilibili.com",
       })
-      .then((_) => {
-        res.send(ResultResp.OK(_.data.data));
-      });
+    ).data.data.videos;
+    const xcode_data = (
+      await requests.get("/x/web/detail/videos", {
+        params: {
+          aid: req.query.aid,
+          mode: 1,
+          ps: 500,
+          pn: 1,
+        },
+        baseURL: "https://member.bilibili.com",
+      })
+    ).data.data.videos.sort((a, b) => a.index - b.index);
+    for (let v of views) {
+      v.xcode_state = xcode_data.find((vv) => vv.cid == v.cid)?.xcode_state;
+    }
+    res.send(ResultResp.OK(views));
+  } catch (error) {
+    res.status(500).send(ResultResp.FAILED(error.message));
+  }
+});
+
+router.get("/member/archives/xcode", async (req, res) => {
+  try {
+    const bvid = req.query.bvid;
+    const cid = req.query.cid;
+    const data = (
+      await requests.get("/x/web/detail/xcode", {
+        params: {
+          bvid,
+          cid,
+        },
+        baseURL: "https://member.bilibili.com",
+      })
+    ).data.data;
+    res.send(ResultResp.OK(data));
   } catch (error) {
     res.status(500).send(ResultResp.FAILED(error.message));
   }

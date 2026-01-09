@@ -89,7 +89,7 @@
     :footer="false"
     :width="800"
   >
-    <a-table :columns="statusTableColumns" :data="statusViewData">
+    <a-table :data="statusViewData">
       <template #columns>
         <a-table-column
           title="分p标题"
@@ -107,21 +107,84 @@
             <div
               :style="{
                 color:
-                  record.status == pStatusCode.SUCCESS
+                  record.xcode_state === 2
                     ? 'rgb(var(--green-6))'
-                    : record.status == pStatusCode.PROCESSING
+                    : record.status === 1
                     ? 'rgb(var(--gray-6))'
                     : 'rgb(var(--red-6))',
               }"
+              @click="openXCodeStateDetailModal(record.bvid, record.cid)"
             >
-              {{
-                record.status == pStatusCode.SUCCESS
-                  ? "转码成功"
-                  : record.status == pStatusCode.PROCESSING
-                  ? "转码中"
-                  : "转码失败"
-              }}
+              {{ XCODE_TAGS[record.xcode_state] }}
             </div>
+          </template>
+        </a-table-column>
+      </template>
+    </a-table>
+  </a-modal>
+  <a-modal
+    v-model:visible="isXCodeResultsOpened"
+    title="转码详细状态"
+    :footer="false"
+    :width="800"
+    :on-before-cancel="closeXCodeStateDetailModal"
+    :on-before-ok="closeXCodeStateDetailModal"
+  >
+    <span v-if="statusViewXCodeResults.xcode_state !== 2">
+      {{ statusViewXCodeResults.fail_tip ?? "压制出错" }}
+    </span>
+    <a-table
+      v-if="statusViewXCodeResults.transcode_list ?? false"
+      :data="statusViewXCodeResults.transcode_list"
+    >
+      <template #columns>
+        <a-table-column
+          title="清晰度"
+          data-index="resolution"
+          :width="100"
+          :min-width="100"
+        />
+        <a-table-column
+          title="压制状态"
+          data-index="status"
+          :width="100"
+          :min-width="100"
+        >
+          <template #cell="{ record }">
+            {{
+              record.status === "success"
+                ? "转码完成"
+                : record.status === "processing"
+                ? "转码中"
+                : "失败"
+            }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="开始时间"
+          data-index="start_time"
+          :width="200"
+          :min-width="200"
+          ><template #cell="{ record }">
+            {{ formatDate(record.start_time * 1000) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="完成时间"
+          data-index="completed_at"
+          :width="200"
+          :min-width="200"
+          ><template #cell="{ record }">
+            {{ formatDate(record.completed_at * 1000) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="预估时间"
+          data-index="estimated_time"
+          :width="200"
+          :min-width="200"
+          ><template #cell="{ record }">
+            {{ formatDate(record.estimated_time * 1000) }}
           </template>
         </a-table-column>
       </template>
@@ -130,7 +193,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, h } from "vue";
 import requests from "@/utils/requests";
 import formatDate from "@/utils/dateFormatter";
 import { Message, Modal } from "@arco-design/web-vue";
@@ -217,10 +280,8 @@ const problemClick = (info) => {
 };
 const isStatusViewOpened = ref(false);
 const statusViewData = ref([]);
-const pStatusCode = {
-  SUCCESS: 0,
-  PROCESSING: -30,
-};
+const isXCodeResultsOpened = ref(false);
+const statusViewXCodeResults = ref([]);
 const AEGIS_TAGS = {
   1: "审核中",
   2: "审核通过",
@@ -239,8 +300,22 @@ const fetchStatusView = async (item) => {
       params: { aid: item.aid },
     })
   ).data;
-  statusViewData.value = data.data.videos;
+  statusViewData.value = data.data;
   isStatusViewOpened.value = true;
+};
+const openXCodeStateDetailModal = async (bvid, cid) => {
+  const data = (
+    await requests.get("/bili/member/archives/xcode", {
+      params: { bvid, cid },
+    })
+  ).data.data;
+  statusViewXCodeResults.value = data;
+  isXCodeResultsOpened.value = true;
+};
+const closeXCodeStateDetailModal = () => {
+  statusViewXCodeResults.value = [];
+  isXCodeResultsOpened.value = false;
+  return true;
 };
 onMounted(() => {
   getArchiveList();
