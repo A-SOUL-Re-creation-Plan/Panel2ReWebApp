@@ -1,11 +1,11 @@
 import axios from "axios";
 import { app as electron } from "electron";
-import path from 'node:path';
-import { biliHeaders } from './bilibili.js';
+import path from "node:path";
+import { biliHeaders } from "./bilibili.js";
 import { readFileSync } from "node:fs";
 
 const instance = axios.create({
-  baseURL: "https://api.bilibili.com"
+  baseURL: "https://api.bilibili.com",
 });
 
 instance.interceptors.request.use(
@@ -19,8 +19,8 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   function (response) {
-    if(response.data.code == -352){
-      throw ("REQUEST_BLOCKED_BY_BILIBILI")
+    if (response.data.code == -352) {
+      throw "REQUEST_BLOCKED_BY_BILIBILI";
     }
     return response;
   },
@@ -29,22 +29,37 @@ instance.interceptors.response.use(
   }
 );
 
-const refreshCookie = async()=>{
-  var confDir = path.join(electron.getPath("userData"),'biliup.json');
-  var confData = JSON.parse(readFileSync(confDir, 'utf-8'));
+const refreshCookie = async () => {
+  var confDir = path.join(electron.getPath("userData"), "biliup.json");
+  var confData = JSON.parse(readFileSync(confDir, "utf-8"));
   var cookieString = "";
-  for(let i=0;i<confData.cookie_info.cookies.length;i++){
+  for (let i = 0; i < confData.cookie_info.cookies.length; i++) {
     cookieString += `${confData.cookie_info.cookies[i].name}=${confData.cookie_info.cookies[i].value}; `;
   }
-  axios.get('https://api.bilibili.com/x/web-interface/nav/stat',{headers: {
-    'Cookie': cookieString
-  }}).then((_)=>{
-    if(_.data.code == 0){
-      instance.defaults.headers.common=biliHeaders;
-      instance.defaults.headers.common['Cookie']=cookieString;
+
+  (
+    await axios.get("https://www.bilibili.com/", {
+      headers: {
+        ...biliHeaders,
+        "User-Agent": "awa",
+      },
+    })
+  ).headers["set-cookie"].forEach((v) => {
+    cookieString += v;
+  });
+  const _ = await axios.get(
+    "https://api.bilibili.com/x/web-interface/nav/stat",
+    {
+      headers: {
+        Cookie: cookieString,
+      },
     }
-  })
-}
+  );
+  if (_.data.code == 0) {
+    instance.defaults.headers.common = biliHeaders;
+    instance.defaults.headers.common["Cookie"] = cookieString;
+  }
+};
 
 export default instance;
 export { refreshCookie };
