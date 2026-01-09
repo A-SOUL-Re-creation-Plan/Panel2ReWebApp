@@ -64,20 +64,19 @@ router.get("/dynamics", async (req, res) => {
     if (!uid_list.includes(uid)) {
       res.status(403).send(ResultResp(-403, "ERR_NOT_A-SOUL_RELATED"));
     }
-    requests
-      .get("/x/polymer/web-dynamic/v1/feed/space", {
-        params: await SignParamsWbi({
-          host_mid: uid,
-          offset: offset,
-          features:
-            "itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,forwardListHidden,decorationCard,commentsNewVersion,onlyfansAssetsV2,ugcDelete,onlyfansQaCard",
-        }),
-      })
-      .then((_) => {
-        res.send(ResultResp.OK(_.data.data));
-      });
+    const _ = await requests.get("/x/polymer/web-dynamic/v1/feed/space", {
+      params: await SignParamsWbi({
+        host_mid: uid,
+        offset: offset,
+        features:
+          "itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,forwardListHidden,decorationCard,commentsNewVersion,onlyfansAssetsV2,ugcDelete,onlyfansQaCard",
+      }),
+    });
+    res.send(ResultResp.OK(_.data.data));
+    return;
   } catch (error) {
     res.status(500).send(ResultResp.FAILED(error.message));
+    return;
   }
 });
 
