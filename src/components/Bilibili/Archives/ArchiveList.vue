@@ -38,7 +38,9 @@
                 <span
                   style="color: rgb(var(--blue-8)); padding-right: 8px"
                   @click="fetchStatusView(i)"
-                  >查看转码状态</span
+                  >{{
+                    XCODE_TAGS[i.state_descv3.xcode_tag] ?? "查看转码状态"
+                  }}</span
                 >
                 <span
                   v-if="!(i.state_panel in [0, 1])"
@@ -218,6 +220,18 @@ const statusViewData = ref([]);
 const pStatusCode = {
   SUCCESS: 0,
   PROCESSING: -30,
+};
+const AEGIS_TAGS = {
+  1: "审核中",
+  2: "审核通过",
+  3: "稿件退回",
+  4: "稿件锁定",
+  5: "流量受影响",
+};
+const XCODE_TAGS = {
+  1: "转码中",
+  2: "转码完成",
+  3: "转码失败",
 };
 const fetchStatusView = async (item) => {
   const data = (
