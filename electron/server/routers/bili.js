@@ -111,7 +111,7 @@ router.get("/member/archives", async (req, res) => {
             page: _.data.data.page,
             archives: arc_items,
             status: _.data.data.class,
-          })
+          }),
         );
       });
   } catch (error) {
@@ -189,7 +189,7 @@ router.get("/member/archives/xcode_msg", async (req, res) => {
         res.send(
           ResultResp.OK({
             msg: data_string,
-          })
+          }),
         );
       });
   } catch (error) {
@@ -205,8 +205,8 @@ router.get("/qrcode/fetch", async (req, res) => {
         local_id: 0,
       },
       biliHDAppKey.signKey,
-      biliHDAppKey.signSec
-    )
+      biliHDAppKey.signSec,
+    ),
   );
   try {
     requests
@@ -239,8 +239,8 @@ router.get("/qrcode/pool", async (req, res) => {
           auth_code,
         },
         biliHDAppKey.signKey,
-        biliHDAppKey.signSec
-      )
+        biliHDAppKey.signSec,
+      ),
     );
     requests
       .post("/x/passport-tv-login/qrcode/poll", form, {
@@ -307,7 +307,7 @@ router.get("/pm", async (req, res) => {
           };
         } else {
           let target = talkers_info.find(
-            (_) => _.mid === session_list[i].talker_id
+            (_) => _.mid === session_list[i].talker_id,
           );
           session_list[i].account_info = target;
         }
@@ -341,8 +341,26 @@ router.get("/unread", async (req, res) => {
       ResultResp.OK({
         total_count,
         ...data,
-      })
+      }),
     );
+  } catch (e) {
+    res.status(500).send(ResultResp.FAILED(e.message));
+  }
+});
+
+router.get("/unread_interactive", async (req, res) => {
+  try {
+    let data = (
+      await requests.get("/x/im/web/msgfeed/unread", {
+        baseURL: "https://api.vc.bilibili.com",
+        params: {
+          build: 0,
+          mobi_app: "web",
+        },
+      })
+    ).data.data;
+    const { at, like, reply } = data;
+    res.send(ResultResp.OK({ at, like, reply }));
   } catch (e) {
     res.status(500).send(ResultResp.FAILED(e.message));
   }
