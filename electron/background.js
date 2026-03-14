@@ -108,6 +108,15 @@ app.whenReady().then(async () => {
   }
   win.show();
 
+  const addCookie = async () => {
+    const data = await dialog.showOpenDialogSync({
+      title: "加载Cookie...",
+      defaultPath: app.getPath("appData") + "/biliup/users",
+      filters: [{ extensions: ".json" }],
+    });
+    return data;
+  };
+
   ipcMain.on("window-close", function () {
     win.close();
   });
@@ -126,22 +135,21 @@ app.whenReady().then(async () => {
   win.on("unmaximize", function () {
     win.webContents.send("main-window-unmax");
   });
-  ipcMain.on("cookie-reload-request", function async() {
-    addCookie()
-      .then((_) => {
-        fs.cp(_.filePaths[0], path.join(appData, "biliup.json"), (error) => {
-          if (error) {
-            dialog.showErrorBox("ERROR", "复制出错");
-          } else {
-            dialog.showMessageBox({ message: "复制成功，程序将重启" });
+  ipcMain.on("cookie-reload-request", async function () {
+    const src = await addCookie();
+    if (src !== undefined) {
+      fs.cp(src[0], path.join(appData, "biliup.json"), (error) => {
+        if (error) {
+          dialog.showErrorBox("ERROR", `复制出错\n${error}`);
+        } else {
+          dialog.showMessageBox({ message: "复制成功，程序将重启" });
+          setTimeout(() => {
             app.relaunch();
-            app.quit();
-          }
-        });
-      })
-      .catch((_) => {
-        app.quit();
+            app.exit();
+          }, 2000);
+        }
       });
+    }
   });
   win.webContents.setWindowOpenHandler((handler) => {
     return {
