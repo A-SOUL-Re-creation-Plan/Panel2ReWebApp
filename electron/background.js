@@ -44,7 +44,7 @@ app.whenReady().then(async () => {
     if (host == "ui") {
       if (pathname == "/") {
         const url = "../dist/index.html";
-        return net.fetch(path.join(__dirname, url), {
+        return net.fetch(`file://${path.join(__dirname, url)}`, {
           method: request.method,
           headers: request.headers,
           body: request.body,
@@ -59,7 +59,7 @@ app.whenReady().then(async () => {
       }
       const assetsURL = path.join(__dirname, "../dist");
       const filePath = path.join(assetsURL, pathname);
-      return net.fetch(filePath);
+      return net.fetch(`file://${filePath}`);
     } else if (host == "api") {
       var target = `http://localhost:${servicePort}` + pathname;
       if (search) {
@@ -90,7 +90,7 @@ app.whenReady().then(async () => {
     width: 1280,
     height: 800,
     frame: false,
-    icon: path.join(__dirname, "../public/favicon.ico"),
+    icon: path.join(__dirname, "../public/favicon.png"),
     titleBarStyle: "customButtonsOnHover",
     webPreferences: {
       nodeIntegration: false,
@@ -158,7 +158,7 @@ app.whenReady().then(async () => {
         width: 1440,
         height: 900,
         autoHideMenuBar: true,
-        icon: path.join(__dirname, "../public/favicon.ico"),
+        icon: path.join(__dirname, "../public/favicon.png"),
         title: "Panel2Re @A-SOUL_Recreation_Plan",
       },
     };
